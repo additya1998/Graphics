@@ -1,0 +1,3 @@
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/edit_cache.dir
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/rebuild_cache.dir
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+   <FileVersion major="1" minor="6" />
+   <Project>
+      <Option title="graphics_asgn1" />
+      <Option makefile_is_custom="1" />
+      <Option compiler="gcc" />
+      <Option virtualFolders="CMake Files\;CMake Files\src\;" />
+      <Build>
+      <Target title="all">
+         <Option working_dir="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="edit_cache">
+         <Option working_dir="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 edit_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="rebuild_cache">
+         <Option working_dir="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 rebuild_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="graphics_asgn1">
+         <Option output="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/graphics_asgn1" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/5" />
+            <Add directory="/usr/include/c++/5/backward" />
+            <Add directory="/usr/include/libdrm" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/5" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 graphics_asgn1" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="graphics_asgn1/fast">
+         <Option output="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/graphics_asgn1" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/5" />
+            <Add directory="/usr/include/c++/5/backward" />
+            <Add directory="/usr/include/libdrm" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/5" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 graphics_asgn1/fast" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      </Build>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/ball.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/ball.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/color.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/ground.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/ground.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/input.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/nonedit.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/other_handlers.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/player.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/player.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/Sample_GL.vert">
+          <Option virtualFolder="CMake Files\src\" />
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/Sample_GL.frag">
+          <Option virtualFolder="CMake Files\src\" />
+      </Unit>
+   </Project>
+</CodeBlocks_project_file>
