@@ -22,8 +22,10 @@ CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/main.cpp
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/main.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/player.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/pool.h
+CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/porcupine.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/slab.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/timer.h
+CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/trampoline.h
 
 CMakeFiles/graphics_asgn1.dir/src/nonedit.cpp.o: src/main.h
 CMakeFiles/graphics_asgn1.dir/src/nonedit.cpp.o: src/nonedit.cpp

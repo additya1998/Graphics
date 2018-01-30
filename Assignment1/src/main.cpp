@@ -6,6 +6,7 @@
 #include "pool.h"
 #include "player.h"
 #include "trampoline.h"
+#include "porcupine.h"
 
 using namespace std;
 
@@ -17,7 +18,8 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
-const int total_balls = 100, time_gap = 50, frequency_of_slab = 2, eps = 0.001;
+const int total_balls = 100, total_porcupines = 2;
+const int ball_time_gap = 50, porcupine_time_gap = 500, frequency_of_slab = 2, eps = 0.01;
 float screen_zoom = 0.75, screen_center_x = 0, screen_center_y = 0;
 float screen_top, screen_bottom, screen_left, screen_right;
 
@@ -26,7 +28,8 @@ Player player;
 Ground ground;
 Ball balls[total_balls];
 Trampoline trampoline;
-int time_since_last = 0, SCORE = 0;
+Porcupine porcupines[total_porcupines];
+int time_since_last_ball = 0, SCORE = 0, time_since_last_porcupine = 0;
 
 Timer t60(1.0 / 60);
 
@@ -66,6 +69,9 @@ void draw() {
     pool.draw(VP);
     trampoline.draw(VP);
     player.draw(VP);
+    for(int i=0; i<total_porcupines; ++i){
+    	if(porcupines[i].active) porcupines[i].draw(VP);
+    }
     for(int i=0; i<total_balls; ++i){
     	if(balls[i].active) balls[i].draw(VP);
     }
@@ -76,42 +82,47 @@ void tick_input(GLFWwindow *window) {
     int right = glfwGetKey(window, GLFW_KEY_RIGHT);
     int up = glfwGetKey(window, GLFW_KEY_UP);
     if(left){
-    	player.position.x -= 0.1;
+    	if(player.in_water) player.position.x -= 0.015;
+    	else player.position.x -= 0.05;
     	player.rotation += 10;
     	if(player.rotation > 360) player.rotation -= 360;
     }
     if(right){
-    	player.position.x += 0.1;
+    	if(player.in_water) player.position.x += 0.015;
+    	else player.position.x += 0.05;
     	player.rotation -= 10;
     	if(player.rotation < -360) player.rotation += 360;
     }
     if(up){
-    	player.y_speed = 10;
+    	player.y_speed = 5;
     	// if(abs(player.position.y - player.radius - ground.position.y - (ground.height / 2.0)) < 0.01) player.y_speed += 10;
     }
     player.position.x = max(player.position.x, screen_left + player.radius);
     player.position.x = min(player.position.x, screen_right - player.radius);
 }
 
-int distance(float a, float b, float c, float d){
+float distance(float a, float b, float c, float d){
 	float ans = ((a - c) * (a - c)) + ((b - d) * (b - d));
 	return sqrt(ans);
 }
 
 void tick_elements() {
 
-	/*
-		new balls appearing
-		check collision of player with slab on ball
-		check collision of player with ball
-		check player and pool
-		check player and water (going in, coming out)	
-	*/
+	for(int i=0; i<total_balls; ++i){
+		balls[i].tick();
+		if(balls[i].position.x + balls[i].radius < screen_left) balls[i].active = false;
+	}
+	player.tick();
+	for(int i=0; i<total_porcupines; ++i){
+		porcupines[i].tick();
+		if(porcupines[i].position.x + 1.5 * porcupines[i].width >= screen_right) porcupines[i].x_speed = -porcupines[i].x_speed;
+		else if(porcupines[i].position.x - 1.5 * porcupines[i].width <= screen_left) porcupines[i].x_speed = -porcupines[i].x_speed;
+	}
 
 	// New ball spawn
-	++time_since_last;
-	if(time_since_last > time_gap){
-		time_since_last = 0;
+	++time_since_last_ball;
+	if(time_since_last_ball > ball_time_gap){
+		time_since_last_ball = 0;
 		for(int i=0; i<total_balls; ++i){
 			if(balls[i].active) continue;
 			int min_radius = 2500, max_radius = 5000; // divide by 10000
@@ -126,10 +137,54 @@ void tick_elements() {
 		}
 	}
 
+	++time_since_last_porcupine;
+	if(time_since_last_porcupine > porcupine_time_gap){
+		time_since_last_porcupine = 0;
+		for(int i=0; i<total_porcupines; ++i){
+			if(porcupines[i].active) continue;
+			Porcupine(1.0f, screen_bottom + ground.height, 0.25f, 0.5f, COLOR_RED);
+			porcupines[i].active = true;
+			break;
+		}
+	}
+
+	// Player and porcupine
+	for(int i=0; i<total_porcupines; ++i){
+		if(!porcupines[i].active) continue;
+		if(player.position.y - player.radius <= porcupines[i].position.y + porcupines[i].height and player.position.y + player.radius >= porcupines[i].position.y){
+			bool c = false;
+			if(player.position.x + player.radius >= porcupines[i].position.x - 1.5 * porcupines[i].width and player.position.x + player.radius <= porcupines[i].position.x + 1.5 * porcupines[i].width) c = true;
+			if(player.position.x - player.radius >= porcupines[i].position.x - 1.5 * porcupines[i].width and player.position.x - player.radius <= porcupines[i].position.x + 1.5 * porcupines[i].width) c = true;
+			if(c){
+				porcupines[i].active = false;
+				--SCORE;
+			}
+		}
+	}
+
 	// Player and enemy balls
 	for(int i=0; i<total_balls; ++i){
 		if(balls[i].active){
-			if(distance(balls[i].position.x, balls[i].position.y, player.position.x, player.position.y) < player.radius + balls[i].radius){
+			bool hit_slab = false;
+			// if(balls[i].has_slab){
+			// 	if(distance(balls[i].position.x, balls[i].position.y, player.position.x, player.position.y) < player.radius + balls[i].radius + balls[i].slab.width){
+			// 		float d = distance(balls[i].position.x, balls[i].position.y, player.position.x, player.position.y);
+			// 		float x_d = player.position.x - balls[i].position.x, y_d = player.position.y - balls[i].position.y;
+			// 		float angle = asin(y_d / d), slab_angle = (balls[i].slab.rotation * M_PI) / 180;
+			// 		angle = angle * 180 / M_PI;
+			// 		cout << fabs(angle - slab_angle) << endl;
+			// 		if(fabs(angle - slab_angle) < 15){
+			// 			double x_s = player.x_speed, y_s = player.y_speed;
+			// 			cout << x_s << ' ' << y_s << endl;
+			// 			player.y_speed = -1.0f * (x_s * sin(M_PI - slab_angle - slab_angle) + y_s * cos(slab_angle + slab_angle));
+			// 			player.x_speed = -1.0f * (x_s * cos(M_PI - slab_angle - slab_angle) + y_s * sin(slab_angle + slab_angle)); 
+			// 			cout << x_s << ' ' << y_s << endl;
+			// 			hit_slab = true;
+			// 		}
+			// 	}
+			// }
+
+			if(!hit_slab and distance(balls[i].position.x, balls[i].position.y, player.position.x, player.position.y) < player.radius + balls[i].radius){
 				if(player.y_speed < 0){
 					balls[i].active = false;
 					player.y_speed *= -1;
@@ -140,36 +195,54 @@ void tick_elements() {
 		}
 	}
 
+	// Player and trampoline
 	float d = player.position.y - player.radius - trampoline.position.y;
 	if(d > 0 and d < 0.25 and player.position.x + player.radius > trampoline.position.x - trampoline.radius - 0.15 and player.position.x - player.radius < trampoline.position.x + trampoline.radius + 0.15){
 		if(player.y_speed < 0){
-			player.y_speed = -player.y_speed;
+			player.y_speed = -1.5 * player.y_speed;
 		}
 	}
 
 	// Player and water
-
-
-
-
-	// Player and ground
-	if(player.position.y - player.radius < ground.position.y + (ground.height / 2)){
-		player.position.y = ground.position.y + (ground.height / 2) + player.radius;
-		player.y_speed = -0.5 * player.y_speed;	
+	if(player.position.y - player.radius < pool.position.y and player.position.x >= pool.position.x - pool.radius and player.position.x <= pool.position.x + pool.radius){
+		if(player.in_water);
+		else{
+			player.x_speed /= 2;
+			player.y_speed /= 2;
+			player.x_acc /= 2;
+			player.y_acc /= 2;
+			player.in_water = true;
+		}
+	}
+	else{
+		if(player.in_water){
+			player.x_speed *= 2;
+			player.y_speed *= 2;
+			player.x_acc *= 2;
+			player.y_acc *= 2;
+			player.in_water = false;
+		}
+		else;
 	}
 
-	
-	// if(player.position.x > pool.position.x - pool.radius and player.position.x < pool.position.x + pool.radius and abs(player.position.y - ){
-	// 	float y_pos = (pool.radius * pool.radius) - ((pool.position.x - player.position.x) * (pool.position.x - player.position.x));
-	// 	y_pos = sqrt(y_pos);
-	// 	player.position.y = y_pos;
-	// }
-
-	for(int i=0; i<total_balls; ++i){
-		balls[i].tick();
-		if(balls[i].position.x + balls[i].radius < screen_left) balls[i].active = false;
+	if(player.in_water){
+		float x_d = pool.position.x - player.position.x, y_d = pool.position.y - player.position.y;
+		float d = sqrt(x_d * x_d + y_d * y_d);
+		if(d + player.radius > pool.radius and player.position.y < pool.position.y){
+			float angle = acos(x_d / d);
+			// player.position.x = pool.position.x - (pool.radius - player.radius) * cos(angle);
+			player.position.y = pool.position.y - (pool.radius - player.radius) * sin(angle);
+			player.y_speed = -0.05 * player.y_speed;
+		}
 	}
-	player.tick();
+	else{
+		if(player.position.y - player.radius < ground.position.y + (ground.height / 2.0)){
+			player.position.y = ground.position.y + (ground.height / 2) + player.radius;
+			player.y_speed = -0.5 * player.y_speed;
+			if(fabs(player.y_speed) < eps) player.y_speed = 0;
+		}
+	}
+
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -180,26 +253,24 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 	/* ================================================================================================================================================= */
 
-    // Initialise ground
-	float ground_width = screen_right - screen_left, ground_height = (screen_top - screen_bottom) / 5;
-	ground = Ground(screen_left + (ground_width / 2.0), screen_bottom + (ground_height / 2.0), ground_width, ground_height, COLOR_GREEN);
+	float ground_height = 33, ground_width = 1000;
+	ground = Ground(0, -20, ground_width, ground_height, COLOR_GREEN);
 
-	// Initialise balls
 	for(int i=0; i<total_balls; ++i){
 		balls[i] = Ball();
 		balls[i].active = false;
 	}
 
-	// Initialise player
 	float radius = 0.25;
-	player = Player(-4, screen_bottom + ground_height + radius, radius, COLOR_RED);
-	printf("Center of player: -1 %f\n", screen_bottom + ground_height);
-
+	player = Player(-4, ground.position.y + ground_height / 2.0 + radius, radius, COLOR_RED);
 
 	pool = Pool(-1, ground.position.y + (ground.height / 2.0), 1.25, COLOR_BLUE);
 
 	float tr_x = 3.0f, tr_y = -1.75f; 
-	trampoline = Trampoline(tr_x, tr_y, 1.0f, COLOR_BLACK, tr_y - (screen_bottom + ground_height));
+	trampoline = Trampoline(tr_x, tr_y, 1.0f, COLOR_BLACK, tr_y - (ground.position.y + ground_height / 2.0));
+
+	porcupines[0] = Porcupine(1.0f, ground.position.y + ground_height / 2.0, 0.25f, 0.5f, COLOR_RED);
+	porcupines[1] = Porcupine(-4.0f, ground.position.y + ground_height / 2.0, 0.25f, 0.5f, COLOR_RED);
 
 	/* ================================================================================================================================================= */
 
@@ -257,7 +328,13 @@ int main(int argc, char **argv) {
     quit(window);
 }
 
-
+void handle_zoom(double yoffset){
+	if(yoffset > 0) screen_zoom += 0.1f;
+	else screen_zoom -= 0.1f;
+	if(screen_zoom < 0.15) screen_zoom = 0.15;
+	reset_screen();
+	// cout << screen_zoom << endl;
+}
 
 void reset_screen() {
 	screen_top		= screen_center_y + 4 / screen_zoom;
