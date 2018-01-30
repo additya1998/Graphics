@@ -5,6 +5,7 @@
 #include "ball.h"
 #include "pool.h"
 #include "player.h"
+#include "trampoline.h"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
-const int total_balls = 100, time_gap = 50;
+const int total_balls = 100, time_gap = 50, frequency_of_slab = 2, eps = 0.001;
 float screen_zoom = 0.75, screen_center_x = 0, screen_center_y = 0;
 float screen_top, screen_bottom, screen_left, screen_right;
 
@@ -24,7 +25,8 @@ Pool pool;
 Player player;
 Ground ground;
 Ball balls[total_balls];
-int time_since_last = 0;
+Trampoline trampoline;
+int time_since_last = 0, SCORE = 0;
 
 Timer t60(1.0 / 60);
 
@@ -61,11 +63,12 @@ void draw() {
 
     // Scene render
     ground.draw(VP);
+    pool.draw(VP);
+    trampoline.draw(VP);
+    player.draw(VP);
     for(int i=0; i<total_balls; ++i){
     	if(balls[i].active) balls[i].draw(VP);
     }
-    player.draw(VP);
-    pool.draw(VP);
 }
 
 void tick_input(GLFWwindow *window) {
@@ -96,37 +99,65 @@ int distance(float a, float b, float c, float d){
 }
 
 void tick_elements() {
+
+	/*
+		new balls appearing
+		check collision of player with slab on ball
+		check collision of player with ball
+		check player and pool
+		check player and water (going in, coming out)	
+	*/
+
+	// New ball spawn
 	++time_since_last;
 	if(time_since_last > time_gap){
 		time_since_last = 0;
 		for(int i=0; i<total_balls; ++i){
 			if(balls[i].active) continue;
-			int min_radius = 2500, max_radius = 5000; // divide by 100
+			int min_radius = 2500, max_radius = 5000; // divide by 10000
 			float radius = ((rand() % (max_radius - min_radius)) + min_radius) / 10000.0;
 			int min_y = ceil(radius + (ground.height / 2.0) + ground.position.y); int max_y = floor(screen_top - 3 - radius - radius);
-			float pos_y = ((rand() % (100 * (max_y - min_y))) + min_y) / 100.0; 
-			balls[i] = Ball(screen_right - radius, pos_y, radius, COLOR_GREEN);
+			float pos_y = ((rand() % (100 * (max_y - min_y))) + min_y) / 100.0;
+			bool need_slab = false;
+			if(rand() % frequency_of_slab == 0) need_slab = true;
+			balls[i] = Ball(screen_right - radius, pos_y, radius, COLOR_GREEN, need_slab, rand() % 360);
 			balls[i].active = true;
 			break;
 		}
 	}
 
-	if(player.position.y - player.radius < ground.position.y + (ground.height / 2)){
-		player.position.y = ground.position.y + (ground.height / 2) + player.radius;
-		player.y_speed = -0.5 * player.y_speed;	
-	}
-
+	// Player and enemy balls
 	for(int i=0; i<total_balls; ++i){
 		if(balls[i].active){
 			if(distance(balls[i].position.x, balls[i].position.y, player.position.x, player.position.y) < player.radius + balls[i].radius){
 				if(player.y_speed < 0){
 					balls[i].active = false;
 					player.y_speed *= -1;
-					player.y_speed += 1	;
+					player.y_speed += 1;
+					++SCORE;
 				}
 			}
 		}
 	}
+
+	float d = player.position.y - player.radius - trampoline.position.y;
+	if(d > 0 and d < 0.25 and player.position.x + player.radius > trampoline.position.x - trampoline.radius - 0.15 and player.position.x - player.radius < trampoline.position.x + trampoline.radius + 0.15){
+		if(player.y_speed < 0){
+			player.y_speed = -player.y_speed;
+		}
+	}
+
+	// Player and water
+
+
+
+
+	// Player and ground
+	if(player.position.y - player.radius < ground.position.y + (ground.height / 2)){
+		player.position.y = ground.position.y + (ground.height / 2) + player.radius;
+		player.y_speed = -0.5 * player.y_speed;	
+	}
+
 	
 	// if(player.position.x > pool.position.x - pool.radius and player.position.x < pool.position.x + pool.radius and abs(player.position.y - ){
 	// 	float y_pos = (pool.radius * pool.radius) - ((pool.position.x - player.position.x) * (pool.position.x - player.position.x));
@@ -151,21 +182,24 @@ void initGL(GLFWwindow *window, int width, int height) {
 
     // Initialise ground
 	float ground_width = screen_right - screen_left, ground_height = (screen_top - screen_bottom) / 5;
-	ground = Ground(screen_left + (ground_width / 2.0), screen_bottom + (ground_height / 2.0), ground_width, ground_height, COLOR_BACKGROUND);
+	ground = Ground(screen_left + (ground_width / 2.0), screen_bottom + (ground_height / 2.0), ground_width, ground_height, COLOR_GREEN);
 
 	// Initialise balls
 	for(int i=0; i<total_balls; ++i){
-		balls[i] = Ball(0, 0, 0, COLOR_RED);
+		balls[i] = Ball();
 		balls[i].active = false;
 	}
 
 	// Initialise player
 	float radius = 0.25;
-	player = Player(-1, screen_bottom + ground_height + radius, radius, COLOR_RED);
+	player = Player(-4, screen_bottom + ground_height + radius, radius, COLOR_RED);
 	printf("Center of player: -1 %f\n", screen_bottom + ground_height);
 
 
-	pool = Pool(3, ground.position.y + (ground.height / 2.0), 1.25, COLOR_BLUE);
+	pool = Pool(-1, ground.position.y + (ground.height / 2.0), 1.25, COLOR_BLUE);
+
+	float tr_x = 3.0f, tr_y = -1.75f; 
+	trampoline = Trampoline(tr_x, tr_y, 1.0f, COLOR_BLACK, tr_y - (screen_bottom + ground_height));
 
 	/* ================================================================================================================================================= */
 

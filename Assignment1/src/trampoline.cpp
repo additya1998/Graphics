@@ -1,34 +1,16 @@
+#include "pool.h"
 #include "main.h"
 
-#ifndef POOL_H
-#define POOL_H
-
-
-class Pool {
-public:
-    Pool() {}
-    Pool(float x, float y, float radius, color_t color);
-    glm::vec3 position;
-    float rotation, radius;
-    void draw(glm::mat4 VP);
-    void set_position(float x, float y);
-    void tick();
-    bool active;
-private:
-    VAO *object;
-};
-
-Pool::Pool(float x, float y, float radius, color_t color) {
+Trampoline::Trampoline(float x, float y, float radius, color_t color, float height) {
     this->position = glm::vec3(x, y, 0);
     this->rotation = 0;
     this->radius = radius;
-    this->active = true;
 
     static int position = 0;
     static GLfloat vertex_buffer_data[100 * 3 * 3 * 1000];
 
     int sides = 100;
-    double angle = 3.14159265359, add = (180 * 3.14159265359) / (180 * sides);
+    double angle = 3.14159265359, add = (360 * 3.14159265359) / (180 * sides);
     for(int i=1; i<=sides; ++i){
         vertex_buffer_data[position++] = 0.0f;
         vertex_buffer_data[position++] = 0.0f;
@@ -46,10 +28,24 @@ Pool::Pool(float x, float y, float radius, color_t color) {
         if(angle > 3.14159265359 + 3.14159265359) break;
     }
 
+    // Right leg
+    vertex_buffer_data[position++] = radius;
+    vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = 0.0f;
+
+    vertex_buffer_data[position++] = radius + 0.01;
+    vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = 0.0f;
+    
+    vertex_buffer_data[position++] = radius;
+    vertex_buffer_data[position++] = -height;
+    vertex_buffer_data[position++] = 0.0f;
+
+
     this->object = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color, GL_FILL);
 }
 
-void Pool::draw(glm::mat4 VP) {
+void Trampoline::draw(glm::mat4 VP) {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
     glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(0, 0, 1));
@@ -60,12 +56,10 @@ void Pool::draw(glm::mat4 VP) {
     draw3DObject(this->object);
 }
 
-void Pool::set_position(float x, float y) {
+void Trampoline::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
 
-void Pool::tick() {
+void Trampoline::tick() {
 	
 }
-
-#endif // POOL_H

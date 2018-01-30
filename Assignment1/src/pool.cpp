@@ -11,7 +11,7 @@ Pool::Pool(float x, float y, float radius, color_t color) {
     static GLfloat vertex_buffer_data[100 * 3 * 3 * 1000];
 
     int sides = 100;
-    double angle = 0, add = (360 * 3.14159265359) / (180 * sides);
+    double angle = 3.14159265359, add = (360 * 3.14159265359) / (180 * sides);
     for(int i=1; i<=sides; ++i){
         vertex_buffer_data[position++] = 0.0f;
         vertex_buffer_data[position++] = 0.0f;
@@ -26,6 +26,7 @@ Pool::Pool(float x, float y, float radius, color_t color) {
         vertex_buffer_data[position++] = 0.0f;
 
         angle = angle + add;
+        if(angle > 3.14159265359 + 3.14159265359) break;
     }
 
     this->object = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color, GL_FILL);

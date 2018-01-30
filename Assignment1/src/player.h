@@ -26,6 +26,7 @@ Player::Player(float x, float y, float radius, color_t color) {
     this->radius = radius;
     this->x_speed = 0;
     this->y_speed = 0;
+    this->y_acc = -10;
 
     int position = 0;
     static GLfloat vertex_buffer_data[100 * 3 * 3 * 1000];
@@ -67,10 +68,8 @@ void Player::set_position(float x, float y) {
 }
 
 void Player::tick() {
-	// printf("%f\n", this->position.y);
-	this->position.y = this->position.y + (this->y_speed * (1.0 / 60)) + 0.5 * (-10) * (1.0 / 60) * (1.0 / 60);
-	// printf("%f\n", this->position.y);
-	this->y_speed = this->y_speed + (- 10 * (1.0 / 60));
+	this->position.y = this->position.y + (this->y_speed * (1.0 / 60)) + 0.5 * (this->y_acc) * (1.0 / 60) * (1.0 / 60);
+	this->y_speed = this->y_speed + (this->y_acc * (1.0 / 60));
 }
 
 

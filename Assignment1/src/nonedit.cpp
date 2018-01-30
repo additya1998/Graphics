@@ -2,6 +2,8 @@
 #include <cmath>
 #include <fstream>
 #include <vector>
+#include <string>
+#include <bits/stdc++.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -30,7 +32,15 @@ GLFWwindow*initGLFW(int width, int height) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,           GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(width, height, "Sample OpenGL 3.3 Application", NULL, NULL);
+    char score[10];
+    int t = SCORE, pos = 0;
+    while(t){
+    	score[pos++] = t % 10 + '0';
+    	t /= 10;
+    }
+    score[pos] = '/0';
+
+    window = glfwCreateWindow(width, height, score, NULL, NULL);
 
     if (!window) {
         glfwTerminate();
