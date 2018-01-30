@@ -9,7 +9,7 @@ Porcupine::Porcupine(float x, float y, float width, float height, color_t color)
     this->height = height;
     this->active = true;
 
-    GLfloat vertex_buffer_data = {
+    GLfloat vertex_buffer_data[] = {
 		-3.0 * width / 2.0, 0.0f, 0.0f,
 		-width, height, 0.0f,
 		-width / 2.0, 0.0f, 0.0f,
@@ -20,8 +20,8 @@ Porcupine::Porcupine(float x, float y, float width, float height, color_t color)
 
 		width / 2.0, 0, 0,
 		width, height, 0,
-		3. 0 * width / 2.0, 0, 0
-    }
+		3.0 * width / 2.0, 0, 0
+    };
 
     this->object = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data, color, GL_FILL);
 }
@@ -42,5 +42,5 @@ void Porcupine::set_position(float x, float y) {
 }
 
 void Porcupine::tick() {
-    this->position.x -= this->x_speed;
+    this->position.x += this->x_speed;
 }

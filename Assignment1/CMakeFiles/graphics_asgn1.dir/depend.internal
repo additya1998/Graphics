@@ -16,9 +16,14 @@ CMakeFiles/graphics_asgn1.dir/src/ground.cpp.o
 CMakeFiles/graphics_asgn1.dir/src/input.cpp.o
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/input.cpp
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.o
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.cpp
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.h
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/ball.h
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/ground.h
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.h
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.cpp
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/player.h
@@ -37,6 +42,18 @@ CMakeFiles/graphics_asgn1.dir/src/player.cpp.o
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/player.cpp
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/player.h
+CMakeFiles/graphics_asgn1.dir/src/pool.cpp.o
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.cpp
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.h
+CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.o
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.cpp
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.h
 CMakeFiles/graphics_asgn1.dir/src/timer.cpp.o
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.cpp
  /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.h
+CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.o
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.cpp
+ /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.h

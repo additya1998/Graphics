@@ -8,11 +8,15 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/color.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/color.cpp.o"
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/ground.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/ground.cpp.o"
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/input.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/input.cpp.o"
+  "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.o"
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/main.cpp.o"
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/nonedit.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/nonedit.cpp.o"
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/other_handlers.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/other_handlers.cpp.o"
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/player.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/player.cpp.o"
+  "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/pool.cpp.o"
+  "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.o"
   "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/timer.cpp.o"
+  "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.cpp" "/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

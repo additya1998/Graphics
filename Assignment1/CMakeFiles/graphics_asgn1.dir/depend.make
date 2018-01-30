@@ -16,8 +16,13 @@ CMakeFiles/graphics_asgn1.dir/src/ground.cpp.o: src/main.h
 CMakeFiles/graphics_asgn1.dir/src/input.cpp.o: src/input.cpp
 CMakeFiles/graphics_asgn1.dir/src/input.cpp.o: src/main.h
 
+CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.o: src/magnet.cpp
+CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.o: src/magnet.h
+CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.o: src/main.h
+
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/ball.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/ground.h
+CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/magnet.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/main.cpp
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/main.h
 CMakeFiles/graphics_asgn1.dir/src/main.cpp.o: src/player.h
@@ -37,6 +42,18 @@ CMakeFiles/graphics_asgn1.dir/src/player.cpp.o: src/main.h
 CMakeFiles/graphics_asgn1.dir/src/player.cpp.o: src/player.cpp
 CMakeFiles/graphics_asgn1.dir/src/player.cpp.o: src/player.h
 
+CMakeFiles/graphics_asgn1.dir/src/pool.cpp.o: src/main.h
+CMakeFiles/graphics_asgn1.dir/src/pool.cpp.o: src/pool.cpp
+CMakeFiles/graphics_asgn1.dir/src/pool.cpp.o: src/pool.h
+
+CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.o: src/main.h
+CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.o: src/porcupine.cpp
+CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.o: src/porcupine.h
+
 CMakeFiles/graphics_asgn1.dir/src/timer.cpp.o: src/timer.cpp
 CMakeFiles/graphics_asgn1.dir/src/timer.cpp.o: src/timer.h
+
+CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.o: src/main.h
+CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.o: src/trampoline.cpp
+CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.o: src/trampoline.h
 

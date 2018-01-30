@@ -7,6 +7,7 @@
 #include "player.h"
 #include "trampoline.h"
 #include "porcupine.h"
+#include "magnet.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
-const int total_balls = 100, total_porcupines = 2;
+const int total_balls = 100, total_porcupines = 2, magnet_time = 500;
 const int ball_time_gap = 50, porcupine_time_gap = 500, frequency_of_slab = 2, eps = 0.01;
 float screen_zoom = 0.75, screen_center_x = 0, screen_center_y = 0;
 float screen_top, screen_bottom, screen_left, screen_right;
@@ -29,6 +30,7 @@ Ground ground;
 Ball balls[total_balls];
 Trampoline trampoline;
 Porcupine porcupines[total_porcupines];
+Magnet magnet;
 int time_since_last_ball = 0, SCORE = 0, time_since_last_porcupine = 0;
 
 Timer t60(1.0 / 60);
@@ -67,6 +69,7 @@ void draw() {
     // Scene render
     ground.draw(VP);
     pool.draw(VP);
+    if(magnet.active) magnet.draw(VP);
     trampoline.draw(VP);
     player.draw(VP);
     for(int i=0; i<total_porcupines; ++i){
@@ -145,6 +148,26 @@ void tick_elements() {
 			Porcupine(1.0f, screen_bottom + ground.height, 0.25f, 0.5f, COLOR_RED);
 			porcupines[i].active = true;
 			break;
+		}
+	}
+
+	++magnet.timer;
+	if(magnet.timer == magnet_time){
+		magnet.timer = 0;
+		if(magnet.active){
+			magnet.active = false;
+			player.x_speed = 0;
+		}
+		else{
+			if(rand() & 1){
+				magnet = Magnet(3, 3, 1, 0, COLOR_RED, COLOR_GREEN);
+				player.x_speed = 0.5;
+			}
+			else{
+				magnet = Magnet(-3, 3, 1, 1, COLOR_RED, COLOR_GREEN);
+				player.x_speed = -0.5;				
+			}
+			magnet.active = true;
 		}
 	}
 
@@ -271,6 +294,8 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 	porcupines[0] = Porcupine(1.0f, ground.position.y + ground_height / 2.0, 0.25f, 0.5f, COLOR_RED);
 	porcupines[1] = Porcupine(-4.0f, ground.position.y + ground_height / 2.0, 0.25f, 0.5f, COLOR_RED);
+
+	magnet = Magnet();
 
 	/* ================================================================================================================================================= */
 

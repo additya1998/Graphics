@@ -54,6 +54,16 @@ glm/gtc/matrix_transform.hpp
 main.h
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
 
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.cpp
+main.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+magnet.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.h
+
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.h
+main.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.cpp
 iostream
 -
@@ -73,6 +83,8 @@ trampoline.h
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.h
 porcupine.h
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.h
+magnet.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.h
 
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
 iostream
@@ -152,9 +164,21 @@ main.h
 main.h
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
 
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.cpp
+pool.h
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.h
 main.h
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.h
+main.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.cpp
+main.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+porcupine.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.h
 
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.h
 main.h
@@ -171,6 +195,12 @@ GLFW/glfw3.h
 -
 
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.h
+
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.cpp
+main.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.h
+trampoline.h
+/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.h
 
 /home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.h
 main.h

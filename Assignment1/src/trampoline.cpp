@@ -1,5 +1,5 @@
-#include "pool.h"
 #include "main.h"
+#include "trampoline.h"
 
 Trampoline::Trampoline(float x, float y, float radius, color_t color, float height) {
     this->position = glm::vec3(x, y, 0);
@@ -10,7 +10,7 @@ Trampoline::Trampoline(float x, float y, float radius, color_t color, float heig
     static GLfloat vertex_buffer_data[100 * 3 * 3 * 1000];
 
     int sides = 100;
-    double angle = 3.14159265359, add = (360 * 3.14159265359) / (180 * sides);
+    double angle = 3.14159265359, add = (180 * 3.14159265359) / (180 * sides);
     for(int i=1; i<=sides; ++i){
         vertex_buffer_data[position++] = 0.0f;
         vertex_buffer_data[position++] = 0.0f;
@@ -29,19 +29,23 @@ Trampoline::Trampoline(float x, float y, float radius, color_t color, float heig
     }
 
     // Right leg
-    vertex_buffer_data[position++] = radius;
-    vertex_buffer_data[position++] = 0.0f;
-    vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = radius; vertex_buffer_data[position++] = 0.0f; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = radius + 0.15; vertex_buffer_data[position++] = 0.0f; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = radius; vertex_buffer_data[position++] = -height; vertex_buffer_data[position++] = 0.0f;
 
-    vertex_buffer_data[position++] = radius + 0.01;
-    vertex_buffer_data[position++] = 0.0f;
-    vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = radius + 0.15; vertex_buffer_data[position++] = 0.0f; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = radius; vertex_buffer_data[position++] = -height; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = radius + 0.15; vertex_buffer_data[position++] = -height; vertex_buffer_data[position++] = 0.0f;
+
+    // Left leg
+    vertex_buffer_data[position++] = -radius - 0.15; vertex_buffer_data[position++] = 0.0f; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = -radius; vertex_buffer_data[position++] = 0.0f; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = -radius - 0.15; vertex_buffer_data[position++] = -height; vertex_buffer_data[position++] = 0.0f;
+
+    vertex_buffer_data[position++] = -radius; vertex_buffer_data[position++] = 0.0f; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = -radius - 0.15; vertex_buffer_data[position++] = -height; vertex_buffer_data[position++] = 0.0f;
+    vertex_buffer_data[position++] = -radius; vertex_buffer_data[position++] = -height; vertex_buffer_data[position++] = 0.0f;
     
-    vertex_buffer_data[position++] = radius;
-    vertex_buffer_data[position++] = -height;
-    vertex_buffer_data[position++] = 0.0f;
-
-
     this->object = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color, GL_FILL);
 }
 

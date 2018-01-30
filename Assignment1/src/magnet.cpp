@@ -1,20 +1,31 @@
-#include "player.h"
 #include "main.h"
+#include "magnet.h"
 
-Player::Player(float x, float y, float radius, color_t color) {
+Magnet::Magnet(float x, float y, float radius, bool left, color_t color_main, color_t color_edge) {
     this->position = glm::vec3(x, y, 0);
     this->rotation = 0;
     this->radius = radius;
-    this->x_speed = 0;
-    this->y_speed = 0;
-    this->y_acc = -10;
-    this->in_water = false;
+    this->active = false;
+    this->timer = 0;
+    this->left = left;
 
     int position = 0;
-    static GLfloat vertex_buffer_data[100 * 3 * 3 * 1000];
+    GLfloat vertex_buffer_data[100 * 3 * 3 * 1000];
 
     int sides = 100;
-    double angle = 0, add = (360 * 3.14159265359) / (180 * sides);
+    double angle = 3.14159265359 / 2.0, add = 3.14159265359 / sides, limit = 0;
+
+    if(this->left){
+    	angle = M_PI / 2.0;
+    	add = M_PI / sides;
+    	limit = angle + M_PI;
+    }
+    else{
+    	angle = 3 * M_PI / 2.0;
+    	add = M_PI / sides;
+    	limit = angle + M_PI;
+    }
+
     for(int i=1; i<=sides; ++i){
         vertex_buffer_data[position++] = 0.0f;
         vertex_buffer_data[position++] = 0.0f;
@@ -29,12 +40,16 @@ Player::Player(float x, float y, float radius, color_t color) {
         vertex_buffer_data[position++] = 0.0f;
 
         angle = angle + add;
+        if(angle > limit) break;
     }
 
-    this->object = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color, GL_FILL);
+    // printf("POS %d\n", position);
+
+    this->object_1 = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color_edge, GL_FILL);
+    this->object_2 = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color_main, GL_FILL);
 }
 
-void Player::draw(glm::mat4 VP) {
+void Magnet::draw(glm::mat4 VP) {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
     glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(0, 0, 1));
@@ -42,17 +57,14 @@ void Player::draw(glm::mat4 VP) {
     Matrices.model *= (translate * rotate);
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-    draw3DObject(this->object);
+    draw3DObject(this->object_1);
+    draw3DObject(this->object_2);
 }
 
-void Player::set_position(float x, float y) {
+void Magnet::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
 
-void Player::tick() {
-	this->position.y = this->position.y + (this->y_speed * (1.0 / 60)) + 0.5 * (this->y_acc) * (1.0 / 60) * (1.0 / 60);
-	this->position.x = this->position.x + (this->x_speed * (1.0 / 60)) + 0.5 * (this->x_acc) * (1.0 / 60) * (1.0 / 60);
-	this->y_speed = this->y_speed + (this->y_acc * (1.0 / 60));
-	this->x_speed = this->x_speed + (this->x_acc * (1.0 / 60));
+void Magnet::tick() {
+	
 }
-

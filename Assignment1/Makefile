@@ -231,6 +231,33 @@ src/input.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/input.cpp.s
 .PHONY : src/input.cpp.s
 
+src/magnet.o: src/magnet.cpp.o
+
+.PHONY : src/magnet.o
+
+# target to build an object file
+src/magnet.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.o
+.PHONY : src/magnet.cpp.o
+
+src/magnet.i: src/magnet.cpp.i
+
+.PHONY : src/magnet.i
+
+# target to preprocess a source file
+src/magnet.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.i
+.PHONY : src/magnet.cpp.i
+
+src/magnet.s: src/magnet.cpp.s
+
+.PHONY : src/magnet.s
+
+# target to generate assembly for a file
+src/magnet.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/magnet.cpp.s
+.PHONY : src/magnet.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -339,6 +366,60 @@ src/player.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/player.cpp.s
 .PHONY : src/player.cpp.s
 
+src/pool.o: src/pool.cpp.o
+
+.PHONY : src/pool.o
+
+# target to build an object file
+src/pool.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/pool.cpp.o
+.PHONY : src/pool.cpp.o
+
+src/pool.i: src/pool.cpp.i
+
+.PHONY : src/pool.i
+
+# target to preprocess a source file
+src/pool.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/pool.cpp.i
+.PHONY : src/pool.cpp.i
+
+src/pool.s: src/pool.cpp.s
+
+.PHONY : src/pool.s
+
+# target to generate assembly for a file
+src/pool.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/pool.cpp.s
+.PHONY : src/pool.cpp.s
+
+src/porcupine.o: src/porcupine.cpp.o
+
+.PHONY : src/porcupine.o
+
+# target to build an object file
+src/porcupine.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.o
+.PHONY : src/porcupine.cpp.o
+
+src/porcupine.i: src/porcupine.cpp.i
+
+.PHONY : src/porcupine.i
+
+# target to preprocess a source file
+src/porcupine.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.i
+.PHONY : src/porcupine.cpp.i
+
+src/porcupine.s: src/porcupine.cpp.s
+
+.PHONY : src/porcupine.s
+
+# target to generate assembly for a file
+src/porcupine.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/porcupine.cpp.s
+.PHONY : src/porcupine.cpp.s
+
 src/timer.o: src/timer.cpp.o
 
 .PHONY : src/timer.o
@@ -366,6 +447,33 @@ src/timer.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/timer.cpp.s
 .PHONY : src/timer.cpp.s
 
+src/trampoline.o: src/trampoline.cpp.o
+
+.PHONY : src/trampoline.o
+
+# target to build an object file
+src/trampoline.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.o
+.PHONY : src/trampoline.cpp.o
+
+src/trampoline.i: src/trampoline.cpp.i
+
+.PHONY : src/trampoline.i
+
+# target to preprocess a source file
+src/trampoline.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.i
+.PHONY : src/trampoline.cpp.i
+
+src/trampoline.s: src/trampoline.cpp.s
+
+.PHONY : src/trampoline.s
+
+# target to generate assembly for a file
+src/trampoline.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn1.dir/build.make CMakeFiles/graphics_asgn1.dir/src/trampoline.cpp.s
+.PHONY : src/trampoline.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -387,6 +495,9 @@ help:
 	@echo "... src/input.o"
 	@echo "... src/input.i"
 	@echo "... src/input.s"
+	@echo "... src/magnet.o"
+	@echo "... src/magnet.i"
+	@echo "... src/magnet.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -399,9 +510,18 @@ help:
 	@echo "... src/player.o"
 	@echo "... src/player.i"
 	@echo "... src/player.s"
+	@echo "... src/pool.o"
+	@echo "... src/pool.i"
+	@echo "... src/pool.s"
+	@echo "... src/porcupine.o"
+	@echo "... src/porcupine.i"
+	@echo "... src/porcupine.s"
 	@echo "... src/timer.o"
 	@echo "... src/timer.i"
 	@echo "... src/timer.s"
+	@echo "... src/trampoline.o"
+	@echo "... src/trampoline.i"
+	@echo "... src/trampoline.s"
 .PHONY : help
 
 

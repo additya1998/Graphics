@@ -104,6 +104,12 @@
       <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/input.cpp">
          <Option target="graphics_asgn1"/>
       </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/magnet.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
       <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/main.cpp">
          <Option target="graphics_asgn1"/>
       </Unit>
@@ -122,10 +128,28 @@
       <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/player.h">
          <Option target="graphics_asgn1"/>
       </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/pool.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/porcupine.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
       <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.cpp">
          <Option target="graphics_asgn1"/>
       </Unit>
       <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/timer.h">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.cpp">
+         <Option target="graphics_asgn1"/>
+      </Unit>
+      <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/src/trampoline.h">
          <Option target="graphics_asgn1"/>
       </Unit>
       <Unit filename="/home/additya/IIIT/Spring2018/Graphics/Assignment/Assignment1/CMakeLists.txt">
