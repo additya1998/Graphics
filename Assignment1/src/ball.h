@@ -7,7 +7,7 @@
 class Ball {
 public:
     Ball() {}
-    Ball(float x, float y, float radius, color_t color, bool has_slab, int slab_angle);
+    Ball(float x, float y, float radius, int health, float score, color_t color, bool has_slab, int slab_angle);
     glm::vec3 position;
     float rotation, radius;
     void draw(glm::mat4 VP);
@@ -15,6 +15,7 @@ public:
     void tick();
     double x_speed, y_speed;
     bool active, has_slab;
+    int health, score;
     Slab slab;
 private:
     VAO *object;

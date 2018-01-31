@@ -1,7 +1,7 @@
 #include "ball.h"
 #include "main.h"
 
-Ball::Ball(float x, float y, float radius, color_t color, bool has_slab, int slab_angle) {
+Ball::Ball(float x, float y, float radius, int health, float score, color_t color, bool has_slab, int slab_angle) {
 
 	// slab_angle is parametric co-ordinate of point where slab touches circle
 
@@ -11,6 +11,9 @@ Ball::Ball(float x, float y, float radius, color_t color, bool has_slab, int sla
     this->x_speed = 0.05;
     this->y_speed = 0;
     this->active = true;
+    this->has_slab = has_slab;
+    this->health = health;
+    this->score = score;
 
     int position = 0;
     GLfloat vertex_buffer_data[100 * 3 * 3 * 1000];
@@ -35,7 +38,7 @@ Ball::Ball(float x, float y, float radius, color_t color, bool has_slab, int sla
 
     if(has_slab){
 		this->has_slab = true;
-		float slab_w = 0.25, slab_l = 1.5;
+		float slab_w = 0.05, slab_l = 1.5;
     	double slab_x = this->position.x + ((radius + (slab_w / 2.0)) * cos(slab_angle * M_PI / 180.0));
     	double slab_y = this->position.y + ((radius + (slab_w / 2.0)) * sin(slab_angle * M_PI / 180.0));
     	this->slab = Slab(slab_x, slab_y, slab_angle, slab_l, slab_w, COLOR_BROWN);

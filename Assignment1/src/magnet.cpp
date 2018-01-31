@@ -1,7 +1,7 @@
 #include "main.h"
 #include "magnet.h"
 
-Magnet::Magnet(float x, float y, float radius, bool left, color_t color_main, color_t color_edge) {
+Magnet::Magnet(float x, float y, float radius, bool left, color_t color) {
     this->position = glm::vec3(x, y, 0);
     this->rotation = 0;
     this->radius = radius;
@@ -43,10 +43,7 @@ Magnet::Magnet(float x, float y, float radius, bool left, color_t color_main, co
         if(angle > limit) break;
     }
 
-    // printf("POS %d\n", position);
-
-    this->object_1 = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color_edge, GL_FILL);
-    this->object_2 = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color_main, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, position, vertex_buffer_data, color, GL_FILL);
 }
 
 void Magnet::draw(glm::mat4 VP) {
@@ -57,8 +54,7 @@ void Magnet::draw(glm::mat4 VP) {
     Matrices.model *= (translate * rotate);
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-    draw3DObject(this->object_1);
-    draw3DObject(this->object_2);
+    draw3DObject(this->object);
 }
 
 void Magnet::set_position(float x, float y) {

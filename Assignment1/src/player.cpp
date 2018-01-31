@@ -50,9 +50,16 @@ void Player::set_position(float x, float y) {
 }
 
 void Player::tick() {
-	this->position.y = this->position.y + (this->y_speed * (1.0 / 60)) + 0.5 * (this->y_acc) * (1.0 / 60) * (1.0 / 60);
-	this->position.x = this->position.x + (this->x_speed * (1.0 / 60)) + 0.5 * (this->x_acc) * (1.0 / 60) * (1.0 / 60);
-	this->y_speed = this->y_speed + (this->y_acc * (1.0 / 60));
-	this->x_speed = this->x_speed + (this->x_acc * (1.0 / 60));
+	float factor = 1.0;
+	if(this->in_water) factor = 0.5;
+	this->position.y = this->position.y + factor * ((this->y_speed * (1.0 / 60)) + 0.5 * (this->y_acc) * (1.0 / 60) * (1.0 / 60));
+	this->position.x = this->position.x + factor * ((this->x_speed * (1.0 / 60)) + 0.5 * (this->x_acc) * (1.0 / 60) * (1.0 / 60));
+	this->y_speed = this->y_speed + factor * (this->y_acc * (1.0 / 60));
+	this->x_speed = this->x_speed + factor * (this->x_acc * (1.0 / 60));
+    if(this->x_speed > 0.1 or this->x_speed < -0.1){
+    	if(this->x_speed > 0) this->x_speed = this->x_speed - (5.0  / 60.0);
+    	else this->x_speed = this->x_speed + (5.0  / 60.0);
+    } 
+    if(fabs(this->x_speed) < 0.1) this->x_speed = 0;
 }
 

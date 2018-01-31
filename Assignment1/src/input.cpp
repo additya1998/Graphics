@@ -83,6 +83,5 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods) {
 }
 
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
-    cout << "SCROLL: " << yoffset << endl;
 	handle_zoom(yoffset);
 }

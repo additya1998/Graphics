@@ -6,7 +6,7 @@
 class Magnet {
 public:
     Magnet() { this->timer = 0; }
-    Magnet(float x, float y, float radius, bool left, color_t color_main, color_t color_edge);
+    Magnet(float x, float y, float radius, bool left, color_t color);
     glm::vec3 position;
     float rotation, radius;
     void draw(glm::mat4 VP);
@@ -15,8 +15,7 @@ public:
     bool active, left;
     int timer;
 private:
-    VAO *object_1;
-    VAO *object_2;
+    VAO *object;
 };
 
 #endif // MAGNET_H
