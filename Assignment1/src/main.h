@@ -33,7 +33,10 @@ void keyboard(GLFWwindow *window, int key, int scancode, int action, int mods);
 void keyboardChar(GLFWwindow *window, unsigned int key);
 void mouseButton(GLFWwindow *window, int button, int action, int mods);
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void handle_zoom(double yoffset);
+void move_left();
+void move_right();
 
 // other_handlers.cpp
 void error_callback(int error, const char *description);
@@ -81,6 +84,8 @@ extern const color_t COLOR_GREY;
 extern const color_t COLOR_BLACK;
 extern const color_t COLOR_BACKGROUND;
 
+extern bool left_pressed;
+extern double cursor_xpos, cursor_ypos;
 
 extern int SCORE;
 

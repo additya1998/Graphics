@@ -28,6 +28,7 @@ const int ball_time_gap = 25, porcupine_time_gap = 500, frequency_of_slab = 5, e
 float screen_zoom = 0.5, screen_center_x = 0, screen_center_y = 0;
 float screen_top, screen_bottom, screen_left, screen_right;
 float screen_xoffset = 0.0, screen_yoffset = 0.0;
+bool left_pressed = false;
 
 Pool pool;
 Player player;
@@ -106,6 +107,24 @@ void check_screen(){
 	}	
 }
 
+void move_left(){
+	if(player.in_water) player.position.x -= 0.015;
+	else player.position.x -= 0.05;
+	player.rotation += 10;
+	if(player.rotation > 360) player.rotation -= 360;	
+}
+
+void move_right(){
+	if(player.in_water) player.position.x += 0.015;
+	else player.position.x += 0.05;
+	player.rotation -= 10;
+	if(player.rotation < -360) player.rotation += 360;	
+}
+
+void jump(){
+	if(player.position.y - player.radius <= ground.position.y + (33 / 2.0)) player.y_speed = 15;	
+}
+
 void tick_input(GLFWwindow *window) {
 	int left  = glfwGetKey(window, GLFW_KEY_LEFT);
 	int right = glfwGetKey(window, GLFW_KEY_RIGHT);
@@ -118,22 +137,10 @@ void tick_input(GLFWwindow *window) {
 	int space = glfwGetKey(window, GLFW_KEY_SPACE);
 
 	if(W) handle_zoom(1);
-	else if(A){
-		if(player.in_water) player.position.x -= 0.015;
-		else player.position.x -= 0.05;
-		player.rotation += 10;
-		if(player.rotation > 360) player.rotation -= 360;
-	}
+	else if(A) move_left();
 	else if(S) handle_zoom(-1);
-	else if(D){
-		if(player.in_water) player.position.x += 0.015;
-		else player.position.x += 0.05;
-		player.rotation -= 10;
-		if(player.rotation < -360) player.rotation += 360;
-	}
-	else if(space){
-		if(player.position.y - player.radius <= ground.position.y + (33 / 2.0)) player.y_speed = 10;
-	}
+	else if(D) move_right();
+	else if(space) jump();
 	else if(up) screen_center_y -= 0.01;
 	else if(down) screen_center_y += 0.01;
 	else if(left) screen_center_x -= 0.01;
@@ -434,6 +441,7 @@ int main(int argc, char **argv) {
 		window = initGLFW(width, height);
 
 		initGL (window, width, height);
+		glfwSetCursorPosCallback(window, cursor_position_callback);
 
 		time_t start_time = time(NULL);
 
