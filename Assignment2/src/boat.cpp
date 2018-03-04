@@ -6,94 +6,33 @@ Boat::Boat(float x, float y, float z, color_t color) {
     this->position = glm::vec3(x, y, z);
     this->rotation = 0;
     this->update_time = 0;
-    this->length = 4;
+    this->update_time = 0;
+    this->speed = 0.15;
+    this->length = 2.5;
     this->width = 1;
-    speed = 1;
+    this->health = 100;
 
-    int pos = 0;
-    GLfloat vertex_buffer_data[90];
+    int pos_base = 0, pos_sides = 0;
+    GLfloat vertex_buffer_data_base[18], vertex_buffer_data_sides[100];
 
     vector<float> t; t.clear();
 
-    Point A(0, 0, -2), B(-0.5, 0, 0), C(0, 0, 2), D(0.5, 0, 0);
-    // Point P(0, 0.5, -2), Q(-0.7, 0.5, 0), R(0, 0.5, 2), S(0.1, 0.5, 0);
+    float length = 2.5f, width = 1.0f, height = 1.0f;
+    Point A(-width / 2.0, 0, -length / 2.0), B(-width / 2.0, 0, length / 2.0), C(width / 2.0, 0, length / 2.0), D(width / 2.0, 0, -length / 2.0);
+    Point P((-width / 2.0) - 0.1, height, -length / 2.0), Q((-width / 2.0) - 0.1, height, length / 2.0), R(width / 2.0 + 0.1, height, length / 2.0), S(width / 2.0 + 0.1, height, -length / 2.0);
 
+    get_quad(A, B, C, D, t);
+    for(int i=0; i<t.size(); ++i) vertex_buffer_data_base[pos_base++] = t[i];
+    t.clear();
 
-    get_triangle(A, B, D, t);
-    get_triangle(B, C, D, t);
+    get_quad(A, B, Q, P, t);
+    get_quad(D, C, R, S, t);
+    get_quad(P, S, D, A, t);
+    get_quad(B, C, R, Q, t);
+    for(int i=0; i<t.size(); ++i) vertex_buffer_data_sides[pos_sides++] = t[i]; 
 
-    // get_quad(A, B, Q, P, t);
-    // get_quad(B, C, R, Q, t);
-    // get_quad(C, D, S, R, t);
-    // get_quad(D, A, R, S, t);
-
-    // for(int i=0; i<t.size(); ++i) printf("%f\n", t[i]); 
-    for(int i=0; i<t.size(); ++i) vertex_buffer_data[pos++] = t[i]; 
-    printf("%d\n", pos);
-
-    // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-    // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
-  //   GLfloat vertex_buffer_data[] = {
-
-  //   	0, 0, -2.5f,
-		// 0, 0, 1.5f,
-		// 0.5f, 0, 0,
-
-  //   	0, 0, -2.5f,
-		// 0, 0, 1.5f,
-		// -0.5f, 0, 0,
-
-
-  //       // -0.5f,-0.5f,-0.5f, // triangle 1 : begin
-  //       // -0.5f,-0.5f, 0.5f,
-  //       // -0.5f, 0.5f, 0.5f, // triangle 1 : end
-
-  //       // 0.5f, 0.5f,-0.5f, // triangle 2 : begin
-  //       // -0.5f,-0.5f,-0.5f,
-  //       // -0.5f, 0.5f,-0.5f, // triangle 2 : end
-
-  //       // 0.5f,-0.5f, 0.5f,
-  //       // -0.5f,-0.5f,-0.5f,
-  //       // 0.5f,-0.5f,-0.5f,
-
-  //       // 0.5f, 0.5f,-0.5f,
-  //       // 0.5f,-0.5f,-0.5f,
-  //       // -0.5f,-0.5f,-0.5f,
-
-  //       // -0.5f,-0.5f,-0.5f,
-  //       // -0.5f, 0.5f, 0.5f,
-  //       // -0.5f, 0.5f,-0.5f,
-
-  //       // 0.5f,-0.5f, 0.5f,
-  //       // -0.5f,-0.5f, 0.5f,
-  //       // -0.5f,-0.5f,-0.5f,
-
-  //       // -0.5f, 0.5f, 0.5f,
-  //       // -0.5f,-0.5f, 0.5f,
-  //       // 0.5f,-0.5f, 0.5f,
-
-  //       // 0.5f, 0.5f, 0.5f,
-  //       // 0.5f,-0.5f,-0.5f,
-  //       // 0.5f, 0.5f,-0.5f,
-
-  //       // 0.5f,-0.5f,-0.5f,
-  //       // 0.5f, 0.5f, 0.5f,
-  //       // 0.5f,-0.5f, 0.5f,
-
-  //       // 0.5f, 0.5f, 0.5f,
-  //       // 0.5f, 0.5f,-0.5f,
-  //       // -0.5f, 0.5f,-0.5f,
-
-  //       // 0.5f, 0.5f, 0.5f,
-  //       // -0.5f, 0.5f,-0.5f,
-  //       // -0.5f, 0.5f, 0.5f,
-
-  //       // 0.5f, 0.5f, 0.5f,
-  //       // -0.5f, 0.5f, 0.5f,
-  //       // 0.5f,-0.5f, 0.5f
-  //   };
-
-    this->object = create3DObject(GL_TRIANGLES, pos / 3, vertex_buffer_data, color, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, pos_base / 3, vertex_buffer_data_base, COLOR_YELLOW, GL_FILL);
+    this->object_1 = create3DObject(GL_TRIANGLES, pos_sides / 3, vertex_buffer_data_sides, COLOR_RED, GL_FILL);
 }
 
 void Boat::draw(glm::mat4 VP) {
@@ -106,6 +45,7 @@ void Boat::draw(glm::mat4 VP) {
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     draw3DObject(this->object);
+    draw3DObject(this->object_1);
 }
 
 void Boat::set_position(float x, float y) {
@@ -117,6 +57,8 @@ void Boat::tick() {
 	if(this->update_time > 0 and this->update_time < 20) this->position.y += 0.005;
 	else if(this->update_time >= 20 and this->update_time <= 40) this->position.y -= 0.005;
 	else this->update_time = 0;
+    ++this->speed_time;
+    if(this->speed_time > 6000) this->speed = 0.15, this->speed_time = 0;
 }
 
 bounding_box_t Boat::getBoundingBox(){
