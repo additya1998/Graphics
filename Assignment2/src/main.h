@@ -35,8 +35,7 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods);
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void handle_zoom(double yoffset);
-void move_left();
-void move_right();
+void drag_view(float val);
 void change_view();
 
 // other_handlers.cpp
@@ -70,10 +69,7 @@ extern GLMatrices Matrices;
 enum direction_t { DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT };
 
 struct bounding_box_t {
-    float x;
-    float y;
-    float width;
-    float height;
+    float x, y, z, radius;
 };
 
 bool detect_collision(bounding_box_t a, bounding_box_t b);
@@ -85,8 +81,16 @@ extern bool left_pressed;
 extern double cursor_xpos, cursor_ypos;
 
 // ---- Colors ----
+
+extern const color_t COLOR_YELLOW;
+extern const color_t COLOR_LBLUE;
+extern const color_t COLOR_PURPLE;
+extern const color_t COLOR_WHITE;
+extern const color_t COLOR_BLUE;
+extern const color_t COLOR_BROWN;
 extern const color_t COLOR_RED;
 extern const color_t COLOR_GREEN;
+extern const color_t COLOR_GREY;
 extern const color_t COLOR_BLACK;
 extern const color_t COLOR_BACKGROUND;
 
