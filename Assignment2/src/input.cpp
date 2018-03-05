@@ -30,6 +30,9 @@ void keyboard(GLFWwindow *window, int key, int scancode, int action, int mods) {
 		case GLFW_KEY_V:
 			change_view();
 			break;
+		case GLFW_KEY_SPACE:
+			boat_jump();
+			break;
 		default:
 			break;
 		}

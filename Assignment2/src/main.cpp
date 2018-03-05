@@ -80,6 +80,7 @@ void draw() {
 }
 
 void move_up(){
+	printf("%f\n", boat.speed);
 	boat.position.z = boat.position.z -  boat.speed * cos(boat.rotation * M_PI / 180);
 	boat.position.x = boat.position.x - boat.speed * sin(boat.rotation * M_PI / 180);	
 }
@@ -96,12 +97,17 @@ void drag_view(float val){
 	if(boat.rotation < -360) boat.rotation += 360;
 }
 
+void boat_jump(){
+	if(abs(boat.position.y) < 1) boat.y_speed = 7.5;
+}
+
 void tick_input(GLFWwindow *window) {
 	int up  = glfwGetKey(window, GLFW_KEY_UP);
 	int down  = glfwGetKey(window, GLFW_KEY_DOWN);
 	int left  = glfwGetKey(window, GLFW_KEY_LEFT);
 	int right = glfwGetKey(window, GLFW_KEY_RIGHT);
 	int view = glfwGetKey(window, GLFW_KEY_V);
+	int space = glfwGetKey(window, GLFW_KEY_SPACE);
 	if(up) move_up();
 	if(down) move_down();
 	if(left) drag_view(1);
@@ -139,7 +145,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 	/* Objects should be created before any other gl function and shaders */
 	// Create the models
 
-	boat = Boat(0, 0, 0, COLOR_RED);
+	boat = Boat(0, -0.5, 0, COLOR_RED);
 	++boat.rotation;
 	water = Water(0, -3, 0, COLOR_LBLUE);
 
@@ -148,7 +154,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 		// 0: Health, 1: Booster, 2: Points
 		if(i % 3 == 0) powers[i] = Power(rand() % 50 + 1, 0, rand() % 50 + 1, COLOR_RED, 0);
 		else if(i % 3 == 1) powers[i] = Power(rand() % 50 + 1, 0, rand() % 50 + 1, COLOR_GREEN, 1);
-		else powers[i] = Power(rand() % 50 + 1, 0, rand() % 50 + 1, COLOR_BROWN, 2);
+		else powers[i] = Power(rand() % 50 + 1, 0, rand() % 50 + 1, COLOR_YELLOW, 2);
 	}
 
 	// Create and compile our GLSL program from the shaders

@@ -37,6 +37,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void handle_zoom(double yoffset);
 void drag_view(float val);
 void change_view();
+void boat_jump();
 
 // other_handlers.cpp
 void error_callback(int error, const char *description);
