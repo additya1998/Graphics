@@ -33,6 +33,9 @@ void keyboard(GLFWwindow *window, int key, int scancode, int action, int mods) {
 		case GLFW_KEY_F:
 			fire_cannon(COLOR_BLACK);
 			break;
+		case GLFW_KEY_G:
+			get_off();
+			break;
 		case GLFW_KEY_SPACE:
 			boat_jump();
 			break;

@@ -9,6 +9,8 @@
 #include "monster.h"
 #include "cannon.h"
 #include "trail.h"
+#include "man.h"
+#include "island.h"
 #include "helper.h"
 
 using namespace std;
@@ -21,9 +23,9 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
-const int ROCKS = 30;
-const int POWERUPS = 20;
-const int MONSTERS = 0;
+const int ROCKS = 15;
+const int POWERUPS = 25;
+const int MONSTERS = 5;
 const int CANNONS = 100;
 const int TRAIL = 10000;
 const int BOSS_FIRE = 120;
@@ -38,6 +40,8 @@ Monster monsters[MONSTERS];
 Monster boss;
 Cannon cannons[CANNONS];
 Trail trails[TRAIL];
+Man man;
+Island island;
 
 float screen_zoom = 0, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
@@ -48,7 +52,7 @@ int cur_camera = 0;
 
 // Functions
 void set_camera(int idx);
-
+bool check_collissions();
 
 Timer t60(1.0 / 60);
 
@@ -85,42 +89,95 @@ void draw() {
 
 	// Scene render
 	for(int i=0; i<TRAIL; ++i) if(trails[i].active) trails[i].draw(VP);
+	island.draw(VP);
 	boat.draw(VP);
 	for(int i=0; i<ROCKS; ++i) if(rocks[i].active) rocks[i].draw(VP);
 	for(int i=0; i<POWERUPS; ++i) if(powers[i].active) powers[i].draw(VP);
 	for(int i=0; i<MONSTERS; ++i) if(monsters[i].active) monsters[i].draw(VP);
 	for(int i=0; i<CANNONS; ++i) if(cannons[i].active) cannons[i].draw(VP);
 	if(boss.active) boss.draw(VP);
+	man.draw(VP);
 	water.draw(VP);
 }
 
+void get_off(){
+	if(man.on_boat){
+		man.on_boat = false;
+		man.position.z = man.position.z - 2 * man.speed * cos(man.rotation * M_PI / 180);
+		man.position.x = man.position.x - 2 * man.speed * sin(man.rotation * M_PI / 180);
+		man.position.y = island.position.y + 1.2;
+	}
+	else man.on_boat = true;
+}
+
 void move_up(){
-	boat.position.z = boat.position.z -  boat.speed * cos(boat.rotation * M_PI / 180);
-	boat.position.x = boat.position.x - boat.speed * sin(boat.rotation * M_PI / 180);	
+	if(man.on_boat){
+		if(check_collissions());
+		else{			
+			boat.position.z = boat.position.z - boat.speed * cos(boat.rotation * M_PI / 180);
+			boat.position.x = boat.position.x - boat.speed * sin(boat.rotation * M_PI / 180);				
+		}
+	}
+	else{
+		if(man.angle == 0) man.angle = 15;
+		else{
+			++man.update_time;
+			if(man.update_time == 10) man.angle = -man.angle, man.update_time = 0;
+			man.tick();
+		}
+		man.position.z = man.position.z - man.speed * cos(man.rotation * M_PI / 180);
+		man.position.x = man.position.x - man.speed * sin(man.rotation * M_PI / 180);						
+	}
 }
 
 void move_down(){
-	boat.position.z = boat.position.z + boat.speed * cos(boat.rotation * M_PI / 180);
-	boat.position.x = boat.position.x + boat.speed * sin(boat.rotation * M_PI / 180);
+	if(man.on_boat){
+		if(check_collissions());
+		else{
+			boat.position.z = boat.position.z + boat.speed * cos(boat.rotation * M_PI / 180);
+			boat.position.x = boat.position.x + boat.speed * sin(boat.rotation * M_PI / 180);				
+		}
+	}
+	else{
+		if(man.angle == 0) man.angle = -15;
+		else{
+			++man.update_time;
+			if(man.update_time == 10) man.angle = -man.angle, man.update_time = 0;
+			man.tick();
+		}
+		man.position.z = man.position.z + man.speed * cos(man.rotation * M_PI / 180);
+		man.position.x = man.position.x + man.speed * sin(man.rotation * M_PI / 180);					
+	}
 }
 
 void drag_view(float val){
-	if(val > 0) ++boat.rotation;
-	else --boat.rotation;
-	if(boat.rotation > 360) boat.rotation -= 360;
-	if(boat.rotation < -360) boat.rotation += 360;
+	if(man.on_boat){
+		if(val > 0) ++boat.rotation;
+		else --boat.rotation;
+		if(boat.rotation > 360) boat.rotation -= 360;
+		if(boat.rotation < -360) boat.rotation += 360;		
+	}
+	else{
+		if(val > 0) ++man.rotation;
+		else --man.rotation;
+		if(man.rotation > 360) man.rotation -= 360;
+		if(man.rotation < -360) man.rotation += 360;		
+	}
 }
 
 void boat_jump(){
-	boat.y_speed = 7.5;
+	if(man.on_boat)	boat.y_speed = 7.5;
+	else man.y_speed = 7.5;
 }
 
 void drag_cannon(int val){
 	if(cur_camera != 4){
-		if(val > 0) --boat.cannon_dir;
-		else ++boat.cannon_dir;
-		if(boat.cannon_dir > 360) boat.cannon_dir -= 360;
-		if(boat.cannon_dir < -360) boat.cannon_dir += 360;
+		if(man.on_boat){		
+			if(val > 0) --boat.cannon_dir;
+			else ++boat.cannon_dir;
+			if(boat.cannon_dir > 360) boat.cannon_dir -= 360;
+			if(boat.cannon_dir < -360) boat.cannon_dir += 360;
+		}
 	}
 	else{
 		float v_val = val;
@@ -132,6 +189,7 @@ void drag_cannon(int val){
 }
 
 void fire_cannon(color_t color){
+	if(!man.on_boat) return;
 	for(int i=0; i<CANNONS; ++i){
 		if(cannons[i].active) continue;
 		cannons[i] = Cannon(boat.position.x - 2.5 * sin((boat.rotation + boat.cannon_dir) * M_PI / 180), boat.position.y + 1, boat.position.z - 2.5 * cos((boat.rotation + boat.cannon_dir) * M_PI / 180), boat.rotation + boat.cannon_dir, 0, COLOR_BLACK);
@@ -157,12 +215,49 @@ void tick_input(GLFWwindow *window) {
 	if(cannon_right) drag_cannon(1);
 }
 
+bool check_collissions(){
+	bool hitting = false;
+	for(int i=0; i<ROCKS; ++i){
+		if(rocks[i].active and detect_collision(boat.getBoundingBox(), rocks[i].getBoundingBox())){
+			if(boat.position.y > 1) continue;
+			boat.health = max(0, boat.health - 10);
+			rocks[i].active = false;
+			hitting = true;
+		}
+	}
+	for(int i=0; i<POWERUPS; ++i){
+		if(powers[i].active and detect_collision(boat.getBoundingBox(), powers[i].getBoundingBox())){
+			// 0: Health, 1: Booster, 2: Points
+			if(boat.position.y > 0.75){
+				if(powers[i].type == 0) boat.health = boat.health + 10;
+				else if(powers[i].type == 1){
+					boat.speed_time = 0;
+					boat.speed = boat.speed + 0.05;
+				}
+				else boat.score = boat.score + 10;				
+				powers[i].active = false;
+				hitting = true;
+			}
+		} 		
+	}
+	for(int i=0; i<MONSTERS; ++i){
+		if(monsters[i].active and detect_collision(boat.getBoundingBox(), monsters[i].getBoundingBox())){
+			boat.health = max(boat.health - 50, 0);
+			monsters[i].active = false;
+			hitting = true;
+		}
+	}
+	float distance = ((boat.position.x - island.position.x) * (boat.position.x - island.position.x)) + ((boat.position.z - island.position.z) * (boat.position.z - island.position.z));
+	distance = sqrt(distance);
+	if(distance < island.radius) hitting = true;
+
+	return hitting;
+}
+
 void tick_elements() {
 
 	// tick
-
 	boat.tick();
-
 	if(boat.position.y < 0.5){
 		for(int i=0; i<TRAIL; ++i){
 			if(trails[i].active) trails[i].tick();
@@ -171,6 +266,14 @@ void tick_elements() {
 				break;
 			}
 		}
+	}
+
+	if(man.on_boat){
+		man.position.x = boat.position.x;
+		man.position.y = boat.position.y + 1.2;
+		man.position.z = boat.position.z;
+		man.rotation = boat.rotation;
+		man.y_speed = boat.y_speed;
 	}
 
 	if(boss.active) boss.tick();
@@ -215,34 +318,9 @@ void tick_elements() {
 		++fire_time;
 	}	
 
-	// collisions
-	for(int i=0; i<ROCKS; ++i){
-		if(rocks[i].active and detect_collision(boat.getBoundingBox(), rocks[i].getBoundingBox())){
-			if(boat.position.y > 1) continue;
-			boat.health = max(0, boat.health - 10);
-			rocks[i].active = false;
-		}
-	}
-	for(int i=0; i<POWERUPS; ++i){
-		if(powers[i].active and detect_collision(boat.getBoundingBox(), powers[i].getBoundingBox())){
-			// 0: Health, 1: Booster, 2: Points
-			if(boat.position.y > 3){
-				if(powers[i].type == 0) boat.health = boat.health + 10;
-				else if(powers[i].type == 1){
-					boat.speed_time = 0;
-					boat.speed = boat.speed + 0.05;
-				}
-				else boat.score = boat.score + 10;				
-				powers[i].active = false;
-			}
-		} 		
-	}
-	for(int i=0; i<MONSTERS; ++i){
-		if(monsters[i].active and detect_collision(boat.getBoundingBox(), monsters[i].getBoundingBox())){
-			boat.health = max(boat.health - 50, 0);
-			monsters[i].active = false;
-		}
-	}
+	// boat collissions 
+	check_collissions();
+	
 	for(int i=0; i<CANNONS; ++i){
 		if(cannons[i].active and !cannons[i].fire_ball){
 			for(int j=0; j<ROCKS; ++j){
@@ -282,10 +360,12 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 	srand(time(NULL));
 
+	man = Man(0, 0, 0);
 	boat = Boat(0, -0.5, 0, COLOR_RED);
 	++boat.rotation;
 	water = Water(0, -3, 0, COLOR_BLUE);
 	boss = Monster(rand() % 100 + 30, 0, -(rand() % 100 + 30), 1);
+	island = Island(150, 0, 150, 45, COLOR_SAND);
 
 	for(int i=0; i<ROCKS; ++i){
 		int x_pos = rand() % 100 + 1, z_pos = rand() % 100 + 1;
@@ -408,55 +488,46 @@ void reset_screen() {
 	// float right  = screen_center_x + 4 / screen_zoom;
 	// Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
 }
-
 void set_camera(int idx){
 	
 	// follow boat
 	if(idx == 0){
-		camera[0].eye = glm::vec3(boat.position.x + (5 - screen_zoom) * sin(boat.rotation * M_PI / 180.0f), boat.position.y + 3, boat.position.z + (5 - screen_zoom) * cos(boat.rotation * M_PI / 180.0f));
-		camera[0].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z);
+		camera[0].eye = glm::vec3(man.position.x + (5 - screen_zoom) * sin(man.rotation * M_PI / 180.0f), man.position.y + 3, man.position.z + (5 - screen_zoom) * cos(man.rotation * M_PI / 180.0f));
+		camera[0].target = glm::vec3(man.position.x, man.position.y, man.position.z);
 		camera[0].up = glm::vec3(0, 1, 0);
 	}
 
 	// top view
 	else if(idx == 1){
-		camera[1].eye = glm::vec3(boat.position.x, 10 - screen_zoom, boat.position.z);
-		camera[1].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
+		camera[1].eye = glm::vec3(man.position.x, 10 - screen_zoom, man.position.z);
+		camera[1].target = glm::vec3(man.position.x, man.position.y, man.position.z + 0.05);
 		camera[1].up = glm::vec3(0, -1, 0);
 	}
 
 	// boat view
 	else if(idx == 2){
 		float d = 3.2;
-		camera[2].eye = glm::vec3(boat.position.x - d * sin(boat.rotation * M_PI / 180.0f), boat.position.y + 1, boat.position.z - d * cos(boat.rotation * M_PI / 180.0f));
-		camera[2].target = glm::vec3(boat.position.x - 2 * d * sin(boat.rotation * M_PI / 180.0f), boat.position.y, boat.position.z - 2 * d * cos(boat.rotation * M_PI / 180.0f));
+		camera[2].eye = glm::vec3(man.position.x - d * sin(man.rotation * M_PI / 180.0f), man.position.y + 1, man.position.z - d * cos(man.rotation * M_PI / 180.0f));
+		camera[2].target = glm::vec3(man.position.x - 2 * d * sin(man.rotation * M_PI / 180.0f), man.position.y, man.position.z - 2 * d * cos(man.rotation * M_PI / 180.0f));
 		camera[2].up = glm::vec3(0, 1, 0);
 	}
 
 	// tower view
 	else if(idx == 3){
 		camera[3].eye = glm::vec3(-5, 10, -5);
-		camera[3].target = glm::vec3(boat.position.x , boat.position.y, boat.position.z);
+		camera[3].target = glm::vec3(man.position.x , man.position.y, man.position.z);
 		// camera[3].target = glm::vec3(0, 0, 0);
 		camera[3].up = glm::vec3(0, 1, 0);
 	}
 
 	else{
-
-		// camera[4].eye = glm::vec3(boat.position.x, 10 - screen_zoom, boat.position.z);
-		// camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
-		// camera[4].up = glm::vec3(0, -1, 0);
-		// cur_camera = 0;
-		// camera[4].eye = glm::vec3(boat.position.x, 10 - screen_zoom, boat.position.z);
-		// camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
-		// camera[4].up = glm::vec3(0, -1, 0);
-		camera[4].eye = glm::vec3(boat.position.x + (5 - screen_zoom) * sin(camera_rotation_angle * M_PI / 180.0f), boat.position.y + 3 + y_offset, boat.position.z + (5 - screen_zoom) * cos(camera_rotation_angle * M_PI / 180.0f));
-		camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
+		camera[4].eye = glm::vec3(man.position.x + (5 - screen_zoom) * sin(camera_rotation_angle * M_PI / 180.0f), man.position.y + 3 + y_offset, man.position.z + (5 - screen_zoom) * cos(camera_rotation_angle * M_PI / 180.0f));
+		camera[4].target = glm::vec3(man.position.x, man.position.y, man.position.z + 0.05);
 		camera[4].up = glm::vec3(0, 1, 0);		
 	}
 }
 
 void change_view(){
 	cur_camera = (cur_camera + 1) % 5;
-	printf("%d\n", cur_camera);
+	// printf("%d\n", cur_camera);
 }

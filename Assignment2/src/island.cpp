@@ -1,34 +1,33 @@
-#include "rock.h"
+#include "island.h"
 #include "main.h"
 #include "helper.h"
 
-Rock::Rock(float x, float y, float z, color_t color) {
+Island::Island(float x, float y, float z, float radius, color_t color) {
 
     this->position = glm::vec3(x, y, z);
+    this->radius = radius;
     this->rotation = 0;
-    this->update_time = 0;
-    this->active = true;
-    this->length = 1.0;
-    GLfloat vertex_buffer_data[108];
 
-    int pos = 0; float height = 1.0f, upper = 2.0f, lower = 3.25f;
-    Point A(-upper, height, -upper), B(-upper, height, upper), C(upper, height, upper), D(upper, height, -upper);
-    Point P(-lower, -5, -lower), Q(-lower, -5, lower), R(lower, -5, lower), S(lower, -5, -lower);
-    
-    vector<float> t; t.clear();
-    get_quad(A, B, C, D, t); 
-    get_quad(A, B, Q, P, t); 
-    get_quad(B, C, R, Q, t); 
-    get_quad(D, C, R, S, t); 
-    get_quad(A, D, S, P, t); 
-    get_quad(P, Q, R, S, t); 
+    vector<float> t;
+    int pos = 0;
+    GLfloat vertex_buffer_data[1080];
+
+    int sides = 50;
+    float cur = 0, add = 2 * M_PI / sides;
+    for(int i=0; i<50; ++i){
+        Point center(0, 0, 0);
+        Point A(radius * cos(cur), 0, radius * sin(cur));
+        Point B(radius * cos(cur + add), 0, radius * sin(cur + add));
+        get_triangle(center, A, B, t);
+        cur = cur + add;
+    }
     
     for(int i=0; i<t.size(); ++i) vertex_buffer_data[pos++] = t[i]; 
 
     this->object = create3DObject(GL_TRIANGLES, pos / 3, vertex_buffer_data, color, GL_FILL);
 }
 
-void Rock::draw(glm::mat4 VP) {
+void Island::draw(glm::mat4 VP) {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
     glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(0, 1, 0));
@@ -41,22 +40,22 @@ void Rock::draw(glm::mat4 VP) {
     draw3DObject(this->object);
 }
 
-void Rock::set_position(float x, float y) {
+void Island::set_position(float x, float y) {
     // this->position = glm::vec3(x, y, 0);
 }
 
-void Rock::tick() {
+void Island::tick() {
 	// ++this->update_time;
 	// if(this->update_time > 0 and this->update_time < 20) this->position.y += 0.005;
 	// else if(this->update_time >= 20 and this->update_time <= 40) this->position.y -= 0.005;
 	// else this->update_time = 0;
 }
 
-bounding_box_t Rock::getBoundingBox(){
+bounding_box_t Island::getBoundingBox(){
     bounding_box_t BB;
     BB.x = this->position.x;
     BB.y = this->position.y;
     BB.z = this->position.z;
-    BB.radius = this->length;
+    BB.radius = this->radius;
     return BB;
 }

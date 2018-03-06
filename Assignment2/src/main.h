@@ -40,6 +40,7 @@ void drag_cannon(int val);
 void fire_cannon(color_t color);
 void change_view();
 void boat_jump();
+void get_off();
 
 // other_handlers.cpp
 void error_callback(int error, const char *description);
@@ -96,6 +97,8 @@ extern const color_t COLOR_RED;
 extern const color_t COLOR_GREEN;
 extern const color_t COLOR_GREY;
 extern const color_t COLOR_BLACK;
+extern const color_t COLOR_SKIN;
+extern const color_t COLOR_SAND;
 extern const color_t COLOR_BACKGROUND;
 
 void audio_init();

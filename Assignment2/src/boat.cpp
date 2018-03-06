@@ -7,7 +7,7 @@ Boat::Boat(float x, float y, float z, color_t color) {
     this->rotation = 0;
     this->update_time = 0;
     this->update_time = 0;
-    this->speed = 0.15;
+    this->speed = 0.25;
     this->length = 2.5;
     this->width = 1;
     this->health = 100;
