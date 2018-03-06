@@ -24,7 +24,7 @@ Rock::Rock(float x, float y, float z, color_t color) {
     
     for(int i=0; i<t.size(); ++i) vertex_buffer_data[pos++] = t[i]; 
 
-    this->object = create3DObject(GL_TRIANGLES, sizeof(vertex_buffer_data) / (3 * sizeof(float)), vertex_buffer_data, color, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, pos / 3, vertex_buffer_data, color, GL_FILL);
 }
 
 void Rock::draw(glm::mat4 VP) {

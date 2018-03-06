@@ -21,7 +21,7 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
-const int ROCKS = 10;
+const int ROCKS = 30;
 const int POWERUPS = 20;
 const int MONSTERS = 0;
 const int CANNONS = 100;
@@ -31,7 +31,7 @@ int fire_time = 0;
 
 Water water;
 Boat boat, boat_test;
-Camera camera[4];
+Camera camera[5];
 Rock rocks[ROCKS];
 Power powers[POWERUPS];
 Monster monsters[MONSTERS];
@@ -92,8 +92,6 @@ void draw() {
 	for(int i=0; i<CANNONS; ++i) if(cannons[i].active) cannons[i].draw(VP);
 	if(boss.active) boss.draw(VP);
 	water.draw(VP);
-	// boat_test.draw(VP);
-	// ball2.draw(VP);
 }
 
 void move_up(){
@@ -126,7 +124,7 @@ void drag_cannon(int val){
 	}
 	else{
 		float v_val = val;
-		if(abs(val - 0) == 1) camera_rotation_angle += v_val / 10;
+		if(abs(val - 0) == 1) camera_rotation_angle += v_val / 5;
 		else y_offset += (v_val / 20);
 		y_offset = min(y_offset, 3.0f);
 		y_offset = max(y_offset, -3.0f);
@@ -151,23 +149,18 @@ void tick_input(GLFWwindow *window) {
 	int cannon_left = glfwGetKey(window, GLFW_KEY_A);
 	int cannon_right = glfwGetKey(window, GLFW_KEY_D);
 	int space = glfwGetKey(window, GLFW_KEY_SPACE);
-	int CHECK = glfwGetKey(window, GLFW_KEY_C);
 	if(up) move_up();
 	if(down) move_down();
 	if(left) drag_view(1);
 	if(right) drag_view(-1);
 	if(cannon_left) drag_cannon(-1);
 	if(cannon_right) drag_cannon(1);
-	if(CHECK){
-		for(int i=0; i<ROCKS; ++i){
-			printf("%f %f %f\n", rocks[i].position.x, rocks[i].position.y, rocks[i].position.z);
-		}
-	}
 }
 
 void tick_elements() {
 
 	// tick
+
 	boat.tick();
 
 	if(boat.position.y < 0.5){
@@ -315,7 +308,10 @@ void initGL(GLFWwindow *window, int width, int height) {
 		if((i >> 1) & 1) z_pos = -z_pos; 
 		monsters[i] = Monster(x_pos, 0, z_pos, 0);
 	}
-	for(int i=0; i<CANNONS; ++i) cannons[i] = Cannon(0, 0, 0, 0, 0, COLOR_BLACK);
+	for(int i=0; i<CANNONS; ++i){
+		cannons[i] = Cannon(0, 0, 0, 0, 0, COLOR_BLACK);
+		cannons[i].active = false;
+	}
 
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
@@ -441,18 +437,22 @@ void set_camera(int idx){
 	else if(idx == 3){
 		camera[3].eye = glm::vec3(-5, 10, -5);
 		camera[3].target = glm::vec3(boat.position.x , boat.position.y, boat.position.z);
-		camera[3].target = glm::vec3(0, 0, 0);
+		// camera[3].target = glm::vec3(0, 0, 0);
 		camera[3].up = glm::vec3(0, 1, 0);
 	}
 
 	else{
-		// cur_camera = 0;
-		camera[4].eye = glm::vec3(boat.position.x, 10 - screen_zoom, boat.position.z);
-		camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
-		camera[4].up = glm::vec3(0, -1, 0);
-		// camera[4].eye = glm::vec3(boat.position.x + (5 - screen_zoom) * sin(camera_rotation_angle * M_PI / 180.0f), boat.position.y + 3 + y_offset, boat.position.z + (5 - screen_zoom) * cos(camera_rotation_angle * M_PI / 180.0f));
+
+		// camera[4].eye = glm::vec3(boat.position.x, 10 - screen_zoom, boat.position.z);
 		// camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
-		// camera[4].up = glm::vec3(0, 1, 0);		
+		// camera[4].up = glm::vec3(0, -1, 0);
+		// cur_camera = 0;
+		// camera[4].eye = glm::vec3(boat.position.x, 10 - screen_zoom, boat.position.z);
+		// camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
+		// camera[4].up = glm::vec3(0, -1, 0);
+		camera[4].eye = glm::vec3(boat.position.x + (5 - screen_zoom) * sin(camera_rotation_angle * M_PI / 180.0f), boat.position.y + 3 + y_offset, boat.position.z + (5 - screen_zoom) * cos(camera_rotation_angle * M_PI / 180.0f));
+		camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
+		camera[4].up = glm::vec3(0, 1, 0);		
 	}
 }
 
