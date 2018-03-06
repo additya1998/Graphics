@@ -30,6 +30,9 @@ void keyboard(GLFWwindow *window, int key, int scancode, int action, int mods) {
 		case GLFW_KEY_V:
 			change_view();
 			break;
+		case GLFW_KEY_F:
+			fire_cannon(COLOR_BLACK);
+			break;
 		case GLFW_KEY_SPACE:
 			boat_jump();
 			break;
@@ -66,7 +69,7 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods) {
 		if (action == GLFW_PRESS) {
 			left_pressed = true;
 			glfwGetCursorPos(window, &cursor_xpos, &cursor_ypos);
-		} else if (action == GLFW_RELEASE) left_pressed = true;
+		} else if (action == GLFW_RELEASE) left_pressed = false;
 		break;
 	// case GLFW_MOUSE_BUTTON_RIGHT:
 	// if (action == GLFW_RELEASE) {
@@ -84,8 +87,20 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
 		else if(xpos < cursor_xpos) drag_view(-0.05);
 		cursor_xpos = xpos;
 	}
+	else{
+		if(abs(xpos - cursor_xpos) > 1){
+			if(xpos > cursor_xpos) drag_cannon(1);
+			else if(xpos < cursor_xpos) drag_cannon(-1);
+			cursor_xpos = xpos;
+		}
+		else if(abs(ypos - cursor_ypos) > 1){
+			if(ypos > cursor_ypos) drag_cannon(2);
+			else if(ypos < cursor_ypos) drag_cannon(-2);
+			cursor_ypos = ypos;
+		}		
+	}
  }
 
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
-	// Do something
+	handle_zoom(yoffset / 20);
 }

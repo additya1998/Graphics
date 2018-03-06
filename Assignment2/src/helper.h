@@ -10,3 +10,5 @@ struct Point{
 
 void get_triangle(Point A, Point B, Point C, vector<float> &t);
 void get_quad(Point A, Point B, Point C, Point D, vector<float> &t);
+void get_box(Point center, float height, float width, float depth, vector<float> &ans);
+void get_sphere(Point center, float radius, vector<float> &ans);

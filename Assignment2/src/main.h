@@ -36,6 +36,8 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void handle_zoom(double yoffset);
 void drag_view(float val);
+void drag_cannon(int val);
+void fire_cannon(color_t color);
 void change_view();
 void boat_jump();
 

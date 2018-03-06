@@ -17,6 +17,7 @@ public:
     bounding_box_t getBoundingBox();
 private:
     VAO *object;
+    VAO *base;
 };
 
 #endif // POWER_H

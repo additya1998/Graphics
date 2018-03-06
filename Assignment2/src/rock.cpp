@@ -10,7 +10,7 @@ Rock::Rock(float x, float y, float z, color_t color) {
     this->active = true;
     GLfloat vertex_buffer_data[108];
 
-    int pos = 0; float height = 0.5f, upper = 0.15f, lower = 0.25f;
+    int pos = 0; float height = 1.0f, upper = 0.5f, lower = 1.25f;
     Point A(-upper, height, -upper), B(-upper, height, upper), C(upper, height, upper), D(upper, height, -upper);
     Point P(-lower, 0, -lower), Q(-lower, 0, lower), R(lower, 0, lower), S(lower, 0, -lower);
     
