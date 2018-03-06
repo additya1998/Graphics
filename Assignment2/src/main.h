@@ -98,4 +98,8 @@ extern const color_t COLOR_GREY;
 extern const color_t COLOR_BLACK;
 extern const color_t COLOR_BACKGROUND;
 
+void audio_init();
+void audio_play();
+void audio_close();
+
 #endif

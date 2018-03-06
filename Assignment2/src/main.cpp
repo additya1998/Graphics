@@ -21,9 +21,9 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
-const int ROCKS = 20;
+const int ROCKS = 10;
 const int POWERUPS = 20;
-const int MONSTERS = 5;
+const int MONSTERS = 0;
 const int CANNONS = 100;
 const int TRAIL = 10000;
 const int BOSS_FIRE = 120;
@@ -42,7 +42,7 @@ Trail trails[TRAIL];
 float screen_zoom = 0, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
 float window_width = 1366, window_height = 768;
-float y_offset;
+float y_offset = 0;
 bool left_pressed = false;
 int cur_camera = 0;
 
@@ -151,12 +151,18 @@ void tick_input(GLFWwindow *window) {
 	int cannon_left = glfwGetKey(window, GLFW_KEY_A);
 	int cannon_right = glfwGetKey(window, GLFW_KEY_D);
 	int space = glfwGetKey(window, GLFW_KEY_SPACE);
+	int CHECK = glfwGetKey(window, GLFW_KEY_C);
 	if(up) move_up();
 	if(down) move_down();
 	if(left) drag_view(1);
 	if(right) drag_view(-1);
 	if(cannon_left) drag_cannon(-1);
 	if(cannon_right) drag_cannon(1);
+	if(CHECK){
+		for(int i=0; i<ROCKS; ++i){
+			printf("%f %f %f\n", rocks[i].position.x, rocks[i].position.y, rocks[i].position.z);
+		}
+	}
 }
 
 void tick_elements() {
@@ -293,7 +299,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 		if(i & 1) x_pos = -x_pos;
 		if((i >> 1) & 1) z_pos = -z_pos; 
 		rocks[i] = Rock(x_pos, 0, z_pos, COLOR_BLACK);
-	} 
+	}
 	for(int i=0; i<POWERUPS; ++i){
 		// 0: Health, 1: Booster, 2: Points
 		int x_pos = rand() % 100 + 1, z_pos = rand() % 100 + 1;
@@ -347,9 +353,13 @@ int main(int argc, char **argv) {
 
 	int ticks = 0;
 
+	audio_init();
+
 	/* Draw in loop */
 	while (!glfwWindowShouldClose(window)) {
 		// Process timers
+
+		// audio_play();
 
 		if (t60.processTick()) {
 			++ticks;
@@ -436,12 +446,17 @@ void set_camera(int idx){
 	}
 
 	else{
-		camera[4].eye = glm::vec3(boat.position.x + (5 - screen_zoom) * sin(camera_rotation_angle * M_PI / 180.0f), boat.position.y + 3 + y_offset, boat.position.z + (5 - screen_zoom) * cos(camera_rotation_angle * M_PI / 180.0f));
-		camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z);
-		camera[4].up = glm::vec3(0, 1, 0);		
+		// cur_camera = 0;
+		camera[4].eye = glm::vec3(boat.position.x, 10 - screen_zoom, boat.position.z);
+		camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
+		camera[4].up = glm::vec3(0, -1, 0);
+		// camera[4].eye = glm::vec3(boat.position.x + (5 - screen_zoom) * sin(camera_rotation_angle * M_PI / 180.0f), boat.position.y + 3 + y_offset, boat.position.z + (5 - screen_zoom) * cos(camera_rotation_angle * M_PI / 180.0f));
+		// camera[4].target = glm::vec3(boat.position.x, boat.position.y, boat.position.z + 0.05);
+		// camera[4].up = glm::vec3(0, 1, 0);		
 	}
 }
 
 void change_view(){
 	cur_camera = (cur_camera + 1) % 5;
+	printf("%d\n", cur_camera);
 }
