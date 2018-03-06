@@ -1,3 +1,8 @@
+#include <iostream>
+#include <sys/types.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
 #include "main.h"
 #include "timer.h"
 #include "camera.h"
@@ -417,51 +422,58 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 
 int main(int argc, char **argv) {
-	srand(time(0));
-	int width  = 600;
-	int height = 600;
 
-	window = initGLFW(width, height);
-
-	initGL (window, width, height);
-	glfwSetCursorPosCallback(window, cursor_position_callback);
-	set_camera(cur_camera);
-
-	int ticks = 0;
+	int PID = fork();
 
 	audio_init();
+	if(PID > 0){
+		srand(time(0));
+		int width  = 600;
+		int height = 600;
 
-	/* Draw in loop */
-	while (!glfwWindowShouldClose(window)) {
-		// Process timers
+		window = initGLFW(width, height);
 
-		// audio_play();
+		initGL (window, width, height);
+		glfwSetCursorPosCallback(window, cursor_position_callback);
+		set_camera(cur_camera);
 
-		if (t60.processTick()) {
-			++ticks;
-			if(ticks % 120 == 0){
-				printf("Points: %d\n", boat.score);
-				printf("Health: %d\n", boat.health);
+		int ticks = 0;
+
+		/* Draw in loop */
+		while (!glfwWindowShouldClose(window)) {
+			// Process timers
+
+			if (t60.processTick()) {
+				++ticks;
+				if(ticks % 120 == 0){
+					printf("Points: %d\n", boat.score);
+					printf("Health: %d\n", boat.health);
+				}
+				// Update camera
+				set_camera(cur_camera);
+
+				// 60 fps
+				// OpenGL Draw commands
+				draw();
+				// Swap Frame Buffer in double buffering
+				glfwSwapBuffers(window);
+
+				tick_elements();
+				tick_input(window);
+				if(boat.health <= 0) break;
 			}
-			// Update camera
-			set_camera(cur_camera);
 
-			// 60 fps
-			// OpenGL Draw commands
-			draw();
-			// Swap Frame Buffer in double buffering
-			glfwSwapBuffers(window);
-
-			tick_elements();
-			tick_input(window);
-			if(boat.health <= 0) quit(window);
+			// Poll for Keyboard and mouse events
+			glfwPollEvents();
 		}
-
-		// Poll for Keyboard and mouse events
-		glfwPollEvents();
+		kill(PID, SIGKILL);		
+		quit(window);
 	}
 
-	quit(window);
+	else{
+		while(true) audio_play();		
+	}
+
 }
 
 bool detect_collision(bounding_box_t a, bounding_box_t b) {
