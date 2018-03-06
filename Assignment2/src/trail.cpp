@@ -1,33 +1,27 @@
-#include "rock.h"
+#include "trail.h"
 #include "main.h"
 #include "helper.h"
 
-Rock::Rock(float x, float y, float z, color_t color) {
+Trail::Trail(float x, float y, float z, color_t color) {
 
     this->position = glm::vec3(x, y, z);
-    this->rotation = 0;
-    this->update_time = 0;
+    this->time = 15;
     this->active = true;
     GLfloat vertex_buffer_data[108];
 
-    int pos = 0; float height = 1.0f, upper = 2.0f, lower = 3.25f;
-    Point A(-upper, height, -upper), B(-upper, height, upper), C(upper, height, upper), D(upper, height, -upper);
-    Point P(-lower, -5, -lower), Q(-lower, -5, lower), R(lower, -5, lower), S(lower, -5, -lower);
+    int pos = 0;
+    float upper = 0.15;
+    Point A(-upper, 0, -upper), B(-upper, 0, upper), C(upper, 0, upper), D(upper, 0, -upper);
     
     vector<float> t; t.clear();
     get_quad(A, B, C, D, t); 
-    get_quad(A, B, Q, P, t); 
-    get_quad(B, C, R, Q, t); 
-    get_quad(D, C, R, S, t); 
-    get_quad(A, D, S, P, t); 
-    get_quad(P, Q, R, S, t); 
     
-    for(int i=0; i<t.size(); ++i) vertex_buffer_data[pos++] = t[i]; 
+    for(int i=0; i<t.size(); ++i) vertex_buffer_data[pos++] = t[i];
 
-    this->object = create3DObject(GL_TRIANGLES, sizeof(vertex_buffer_data) / (3 * sizeof(float)), vertex_buffer_data, color, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, pos / 3, vertex_buffer_data, color, GL_FILL);
 }
 
-void Rock::draw(glm::mat4 VP) {
+void Trail::draw(glm::mat4 VP) {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
     glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(0, 1, 0));
@@ -40,22 +34,20 @@ void Rock::draw(glm::mat4 VP) {
     draw3DObject(this->object);
 }
 
-void Rock::set_position(float x, float y) {
+void Trail::set_position(float x, float y) {
     // this->position = glm::vec3(x, y, 0);
 }
 
-void Rock::tick() {
+void Trail::tick() {
+	--this->time;
+	if(this->time == 0) this->active = false;
 	// ++this->update_time;
 	// if(this->update_time > 0 and this->update_time < 20) this->position.y += 0.005;
 	// else if(this->update_time >= 20 and this->update_time <= 40) this->position.y -= 0.005;
 	// else this->update_time = 0;
 }
 
-bounding_box_t Rock::getBoundingBox(){
+bounding_box_t Trail::getBoundingBox(){
     bounding_box_t BB;
-    BB.x = this->position.x;
-    BB.y = this->position.y;
-    BB.z = this->position.z;
-    BB.radius = max(this->length / 2.0, max(this->width / 2.0, this->height / 2.0));
     return BB;
 }

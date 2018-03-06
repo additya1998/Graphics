@@ -7,7 +7,7 @@ Boat::Boat(float x, float y, float z, color_t color) {
     this->rotation = 0;
     this->update_time = 0;
     this->update_time = 0;
-    this->speed = 0.25;
+    this->speed = 0.15;
     this->length = 2.5;
     this->width = 1;
     this->health = 100;
@@ -120,6 +120,7 @@ void Boat::draw(glm::mat4 VP) {
     Matrices.model *= (translate * rotate * translate_cannon * cannon * translate_revert);
     MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);    
+    glUniform1f(Matrices.Shader, 0.5);
     draw3DObject(this->cannon);
 }
 

@@ -63,6 +63,7 @@ struct GLMatrices {
     glm::mat4 model;
     glm::mat4 view;
     GLuint    MatrixID;
+    GLuint    Shader;
 };
 
 extern GLMatrices Matrices;

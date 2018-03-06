@@ -29,7 +29,13 @@ void Water::draw(glm::mat4 VP) {
     Matrices.model *= (translate * rotate);
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
+    glUniform1f(Matrices.Shader, 0.5);
+ 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     draw3DObject(this->object);
+    glDisable(GL_BLEND);
+
 }
 
 void Water::set_position(float x, float y) {

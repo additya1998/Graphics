@@ -8,6 +8,7 @@
 #include "power.h"
 #include "monster.h"
 #include "cannon.h"
+#include "trail.h"
 #include "helper.h"
 
 using namespace std;
@@ -24,6 +25,7 @@ const int ROCKS = 20;
 const int POWERUPS = 20;
 const int MONSTERS = 5;
 const int CANNONS = 100;
+const int TRAIL = 10000;
 const int BOSS_FIRE = 120;
 int fire_time = 0;
 
@@ -35,6 +37,7 @@ Power powers[POWERUPS];
 Monster monsters[MONSTERS];
 Monster boss;
 Cannon cannons[CANNONS];
+Trail trails[TRAIL];
 
 float screen_zoom = 0, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
@@ -81,13 +84,14 @@ void draw() {
 	glm::mat4 MVP;  // MVP = Projection * View * Model
 
 	// Scene render
-	water.draw(VP);
+	for(int i=0; i<TRAIL; ++i) if(trails[i].active) trails[i].draw(VP);
 	boat.draw(VP);
 	for(int i=0; i<ROCKS; ++i) if(rocks[i].active) rocks[i].draw(VP);
 	for(int i=0; i<POWERUPS; ++i) if(powers[i].active) powers[i].draw(VP);
 	for(int i=0; i<MONSTERS; ++i) if(monsters[i].active) monsters[i].draw(VP);
 	for(int i=0; i<CANNONS; ++i) if(cannons[i].active) cannons[i].draw(VP);
 	if(boss.active) boss.draw(VP);
+	water.draw(VP);
 	// boat_test.draw(VP);
 	// ball2.draw(VP);
 }
@@ -159,6 +163,17 @@ void tick_elements() {
 
 	// tick
 	boat.tick();
+
+	if(boat.position.y < 0.5){
+		for(int i=0; i<TRAIL; ++i){
+			if(trails[i].active) trails[i].tick();
+			else{
+				trails[i] = Trail(boat.position.x, -1, boat.position.z, COLOR_WHITE);
+				break;
+			}
+		}
+	}
+
 	if(boss.active) boss.tick();
 	for(int i=0; i<POWERUPS; ++i){
 		if(powers[i].active) powers[i].tick();		
@@ -271,17 +286,17 @@ void initGL(GLFWwindow *window, int width, int height) {
 	boat = Boat(0, -0.5, 0, COLOR_RED);
 	++boat.rotation;
 	water = Water(0, -3, 0, COLOR_BLUE);
-	boss = Monster(rand() % 50 + 30, 0, -(rand() % 50 + 30), 1);
+	boss = Monster(rand() % 100 + 30, 0, -(rand() % 100 + 30), 1);
 
 	for(int i=0; i<ROCKS; ++i){
-		int x_pos = rand() % 50 + 1, z_pos = rand() % 50 + 1;
+		int x_pos = rand() % 100 + 1, z_pos = rand() % 100 + 1;
 		if(i & 1) x_pos = -x_pos;
 		if((i >> 1) & 1) z_pos = -z_pos; 
 		rocks[i] = Rock(x_pos, 0, z_pos, COLOR_BLACK);
 	} 
 	for(int i=0; i<POWERUPS; ++i){
 		// 0: Health, 1: Booster, 2: Points
-		int x_pos = rand() % 50 + 1, z_pos = rand() % 50 + 1;
+		int x_pos = rand() % 100 + 1, z_pos = rand() % 100 + 1;
 		if(i & 1) x_pos = -x_pos;
 		if((i >> 1) & 1) z_pos = -z_pos; 
 		if(i % 3 == 0) powers[i] = Power(x_pos, 0, z_pos, COLOR_RED, 0);
@@ -289,7 +304,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 		else powers[i] = Power(x_pos, 0, z_pos, COLOR_YELLOW, 2);
 	}
 	for(int i=0; i<MONSTERS; ++i){
-		int x_pos = rand() % 50 + 3, z_pos = rand() % 50 + 3;
+		int x_pos = rand() % 100 + 3, z_pos = rand() % 100 + 3;
 		if(i & 1) x_pos = -x_pos;
 		if((i >> 1) & 1) z_pos = -z_pos; 
 		monsters[i] = Monster(x_pos, 0, z_pos, 0);
@@ -300,6 +315,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 	programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
 	// Get a handle for our "MVP" uniform
 	Matrices.MatrixID = glGetUniformLocation(programID, "MVP");
+	Matrices.Shader = glGetUniformLocation(programID, "SHD");
 
 
 	reshapeWindow (window, width, height);

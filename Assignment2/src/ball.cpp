@@ -58,6 +58,7 @@ void Ball::draw(glm::mat4 VP) {
     Matrices.model *= (translate * rotate);
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
+    glUniform1f(Matrices.Shader, 0.5);
     draw3DObject(this->object);
 }
 
