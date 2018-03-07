@@ -16,6 +16,7 @@ public:
     bounding_box_t getBoundingBox();    
 private:
     VAO *object;
+    VAO *treasure;
 };
 
 #endif // ISLAND_H

@@ -1,11 +1,10 @@
-Graphics Boilerplate Code
+Legend of Zelda
 =========================
 
-This is boilerplate code for the assignments which might be helpful.
-
-
-License
--------
-The MIT License https://meghprkh.mit-license.org/
-
-Copyright &copy; 2018 Megh Parikh <meghprkh@gmail.com>
+Controls:
+-> Arror keys to move
+-> Mouse to aim/fire and change angles and zoom in helicopter mode
+-> A/S: change angle of cannon
+-> V: change view
+-> G: Man gets off the boat
+-> Space bar: jump

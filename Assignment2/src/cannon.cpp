@@ -56,6 +56,6 @@ bounding_box_t Cannon::getBoundingBox(){
     BB.x = this->position.x;
     BB.y = this->position.y;
     BB.z = this->position.z;
-    BB.radius = this->radius;
+    BB.radius = this->radius + 1;
     return BB;
 }

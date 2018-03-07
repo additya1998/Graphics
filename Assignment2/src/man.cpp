@@ -136,11 +136,11 @@ void Man::tick() {
     // if(this->wind_dir < 0) this->position.x += 0.01;
     // else this->position.x -= 0.01;
 
-    // if(this->position.y > 0 or this->y_speed > 0){
-    //     this->position.y = this->position.y + ((this->y_speed * (1.0 / 60)) + 0.5 * (-10) * (1.0 / 60) * (1.0 / 60));
-    //     if(this->position.y < -0.5) this->position.y = -0.5;
-    //     this->y_speed = this->y_speed + (-10 * (1.0 / 60));
-    // }
+    if(this->position.y > 0 or this->y_speed > 0){
+        this->position.y = this->position.y + ((this->y_speed * (1.0 / 60)) + 0.5 * (-10) * (1.0 / 60) * (1.0 / 60));
+        if(this->position.y < -0.5) this->position.y = -0.5;
+        this->y_speed = this->y_speed + (-10 * (1.0 / 60));
+    }
 }
 
 bounding_box_t Man::getBoundingBox(){

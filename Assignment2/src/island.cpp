@@ -8,9 +8,9 @@ Island::Island(float x, float y, float z, float radius, color_t color) {
     this->radius = radius;
     this->rotation = 0;
 
-    vector<float> t;
-    int pos = 0;
-    GLfloat vertex_buffer_data[1080];
+    vector<float> t, t_treasure;
+    int pos = 0, pos_treasure = 0;
+    GLfloat vertex_buffer_data[1080], vertex_buffer_treasure[1080];
 
     int sides = 50;
     float cur = 0, add = 2 * M_PI / sides;
@@ -21,10 +21,15 @@ Island::Island(float x, float y, float z, float radius, color_t color) {
         get_triangle(center, A, B, t);
         cur = cur + add;
     }
+
+    Point A(0, 0, 0);
+    get_box(A, 2, 2, 2, t_treasure);
     
     for(int i=0; i<t.size(); ++i) vertex_buffer_data[pos++] = t[i]; 
+    for(int i=0; i<t_treasure.size(); ++i) vertex_buffer_treasure[pos_treasure++] = t_treasure[i]; 
 
-    this->object = create3DObject(GL_TRIANGLES, pos / 3, vertex_buffer_data, color, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, pos / 3, vertex_buffer_data, COLOR_GREEN, GL_FILL);
+    this->treasure = create3DObject(GL_TRIANGLES, pos_treasure / 3, vertex_buffer_treasure, COLOR_BROWN, GL_FILL);
 }
 
 void Island::draw(glm::mat4 VP) {
@@ -38,6 +43,7 @@ void Island::draw(glm::mat4 VP) {
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     glUniform1f(Matrices.Shader, 0.5);
     draw3DObject(this->object);
+    draw3DObject(this->treasure);
 }
 
 void Island::set_position(float x, float y) {

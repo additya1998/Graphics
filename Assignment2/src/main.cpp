@@ -34,7 +34,7 @@ const int MONSTERS = 5;
 const int CANNONS = 100;
 const int TRAIL = 10000;
 const int BOSS_FIRE = 120;
-int fire_time = 0;
+int fire_time = 0, PID;
 
 Water water;
 Boat boat, boat_test;
@@ -186,8 +186,8 @@ void drag_cannon(int val){
 	}
 	else{
 		float v_val = val;
-		if(abs(val - 0) == 1) camera_rotation_angle += v_val / 5;
-		else y_offset += (v_val / 20);
+		if(abs(val - 0) == 1) camera_rotation_angle += v_val;
+		else y_offset += (v_val / 10);
 		y_offset = min(y_offset, 3.0f);
 		y_offset = max(y_offset, -3.0f);
 	}
@@ -250,6 +250,7 @@ bool check_collissions(){
 			boat.health = max(boat.health - 50, 0);
 			monsters[i].active = false;
 			hitting = true;
+
 		}
 	}
 	float distance = ((boat.position.x - island.position.x) * (boat.position.x - island.position.x)) + ((boat.position.z - island.position.z) * (boat.position.z - island.position.z));
@@ -280,6 +281,7 @@ void tick_elements() {
 		man.rotation = boat.rotation;
 		man.y_speed = boat.y_speed;
 	}
+	else man.tick();
 
 	if(boss.active) boss.tick();
 	for(int i=0; i<POWERUPS; ++i){
@@ -423,7 +425,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 int main(int argc, char **argv) {
 
-	int PID = fork();
+	PID = fork();
 
 	audio_init();
 	if(PID > 0){
@@ -440,7 +442,7 @@ int main(int argc, char **argv) {
 		int ticks = 0;
 
 		/* Draw in loop */
-		while (!glfwWindowShouldClose(window)) {
+		while (true) {
 			// Process timers
 
 			if (t60.processTick()) {
@@ -483,7 +485,7 @@ bool detect_collision(bounding_box_t a, bounding_box_t b) {
 }
 
 void handle_zoom(double offset){
-	screen_zoom += offset;
+	screen_zoom += 3*offset;
 	reset_screen();
 }
 

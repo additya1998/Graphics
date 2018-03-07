@@ -8,7 +8,7 @@ Rock::Rock(float x, float y, float z, color_t color) {
     this->rotation = 0;
     this->update_time = 0;
     this->active = true;
-    this->length = 1.0;
+    this->length = 3.0;
     GLfloat vertex_buffer_data[108];
 
     int pos = 0; float height = 1.0f, upper = 2.0f, lower = 3.25f;

@@ -2,6 +2,12 @@
 #include <cmath>
 #include <fstream>
 #include <vector>
+#include <iostream>
+#include <sys/types.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -20,6 +26,7 @@ void error_callback(int error, const char *description) {
 }
 
 void quit(GLFWwindow *window) {
+    kill(PID, SIGKILL);    
     audio_close();
     glfwDestroyWindow(window);
     glfwTerminate();

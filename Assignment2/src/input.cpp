@@ -72,7 +72,7 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods) {
 		if (action == GLFW_PRESS) {
 			left_pressed = true;
 			glfwGetCursorPos(window, &cursor_xpos, &cursor_ypos);
-		} else if (action == GLFW_RELEASE) left_pressed = false;
+		} else if (action == GLFW_RELEASE) fire_cannon(COLOR_BLACK), left_pressed = false;
 		break;
 	// case GLFW_MOUSE_BUTTON_RIGHT:
 	// if (action == GLFW_RELEASE) {
